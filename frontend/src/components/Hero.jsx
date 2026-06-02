@@ -13,14 +13,6 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
 };
 
-const FLOATERS = [
-  { e: "🫗", x: "8%", y: "22%", d: 0 },
-  { e: "🥟", x: "84%", y: "18%", d: 1.5 },
-  { e: "🌶️", x: "12%", y: "70%", d: 0.8 },
-  { e: "🍛", x: "88%", y: "66%", d: 2.2 },
-  { e: "🥗", x: "78%", y: "42%", d: 1.1 },
-];
-
 export default function Hero() {
   const [imgError, setImgError] = useState(false);
 
@@ -33,23 +25,6 @@ export default function Hero() {
       <div className="pointer-events-none absolute -right-40 top-10 h-[34rem] w-[34rem] opacity-[0.07]">
         <div className="h-full w-full animate-spin-slow rounded-full border-[3px] border-dashed border-masala" />
       </div>
-
-      {FLOATERS.map((f, i) => (
-        <motion.span
-          key={i}
-          className="pointer-events-none absolute hidden text-4xl md:block lg:text-5xl"
-          style={{ left: f.x, top: f.y }}
-          animate={{ y: [0, -18, 0], rotate: [0, 8, 0] }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: f.d,
-          }}
-        >
-          {f.e}
-        </motion.span>
-      ))}
 
       <motion.div
         variants={container}

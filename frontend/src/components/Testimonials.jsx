@@ -57,7 +57,7 @@ export default function Testimonials() {
           </div>
         </motion.div>
 
-        <div className="mt-16 text-center">
+        <div className="mt-12 text-center">
           <span className="font-script text-3xl text-saffron">
             Loved by locals
           </span>
@@ -65,34 +65,41 @@ export default function Testimonials() {
             What our guests say
           </h2>
         </div>
+      </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className="relative rounded-3xl bg-cream p-7 text-masala shadow-warm"
+      {/* Continuous right-to-left marquee (full-bleed, single row) */}
+      <div className="group relative mt-12 overflow-hidden">
+        {/* edge fades */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-masala to-transparent sm:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-masala to-transparent sm:w-28" />
+
+        <div className="flex w-max animate-marquee gap-6 group-hover:[animation-play-state:paused]">
+          {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+            <article
+              key={i}
+              className="relative w-[240px] shrink-0 rounded-3xl bg-cream p-5 text-masala shadow-warm sm:w-[360px] sm:p-7"
             >
-              <Quote className="absolute right-6 top-6 h-8 w-8 text-saffron/30" />
+              <Quote className="absolute right-4 top-4 h-5 w-5 text-saffron/25 sm:right-6 sm:top-6 sm:h-7 sm:w-7" />
               <div className="flex">
                 {[...Array(t.rating)].map((_, s) => (
-                  <Star key={s} className="h-4 w-4 fill-saffron text-saffron" />
+                  <Star key={s} className="h-3.5 w-3.5 fill-saffron text-saffron sm:h-4 sm:w-4" />
                 ))}
               </div>
-              <p className="mt-4 leading-relaxed text-masala/80">"{t.text}"</p>
-              <div className="mt-5 flex items-center gap-3">
-                <div className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-saffron to-chili font-display font-black text-white">
+              <p className="mt-3 text-sm leading-relaxed text-masala/80 sm:mt-4 sm:text-base">
+                "{t.text}"
+              </p>
+              <div className="mt-4 flex items-center gap-3 sm:mt-5">
+                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-saffron to-chili font-display text-sm font-black text-white sm:h-10 sm:w-10 sm:text-base">
                   {t.name.charAt(0)}
                 </div>
                 <div>
-                  <p className="font-bold leading-tight">{t.name}</p>
+                  <p className="text-sm font-bold leading-tight sm:text-base">
+                    {t.name}
+                  </p>
                   <p className="text-xs text-masala/55">{t.role}</p>
                 </div>
               </div>
-            </motion.div>
+            </article>
           ))}
         </div>
       </div>

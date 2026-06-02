@@ -25,11 +25,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-cream/90 backdrop-blur-md shadow-soft py-2"
-          : "bg-transparent py-4"
-      }`}
+      className={`fixed inset-x-0 top-0 z-50 bg-white transition-all duration-300 ${scrolled ? "shadow-soft py-1" : "py-1.5"
+        }`}
     >
       <nav className="container flex items-center justify-between gap-2">
         <a href="#home" className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -153,9 +150,8 @@ export function Logo({ light = false, className = "" }) {
         src="/images/logo.jpg"
         alt="Chaat Chaska — Indian Street Food"
         onError={() => setErrored(true)}
-        className={`h-11 w-auto shrink-0 object-contain sm:h-16 ${
-          light ? "rounded-xl bg-white p-1.5" : ""
-        } ${className}`}
+        className={`h-9 w-auto shrink-0 object-contain sm:h-11 ${light ? "rounded-xl bg-white p-1.5" : ""
+          } ${className}`}
       />
     );
   }
@@ -163,7 +159,7 @@ export function Logo({ light = false, className = "" }) {
   // Fallback mark
   return (
     <div className={`flex shrink-0 items-center ${className}`}>
-      <svg viewBox="0 0 100 100" className="h-11 w-11 sm:h-14 sm:w-14">
+      <svg viewBox="0 0 100 100" className="h-9 w-9 sm:h-11 sm:w-11">
         <path
           d="M70 22 A30 30 0 1 0 70 78 L70 64 A16 16 0 1 1 70 36 Z"
           fill="#E23A1E"
