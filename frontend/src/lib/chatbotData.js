@@ -126,7 +126,7 @@ export const INTENTS = [
       "top dish", "suggest",
     ],
     answer:
-      "Our crowd favourites ⭐: Pani Puri (7 AED), Bhel Puri (8 AED), Sev Puri (9 AED), Masala Dosa (10 AED), Butter Pav Bhaji (12 AED) and Delhi Style Falooda (16 AED). You really can't go wrong with the Combo Chaat Platter (20 AED)!",
+      "Our crowd favourites ⭐: Pani Puri, Bhel Puri, Sev Puri, Masala Dosa, Butter Pav Bhaji and Delhi Style Falooda. You really can't go wrong with the Combo Chaat Platter!",
   },
   {
     id: "pani_puri",

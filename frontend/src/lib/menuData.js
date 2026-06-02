@@ -376,3 +376,17 @@ export const TESTIMONIALS = [
   { name: "Mariam H.", role: "Mussafah", rating: 5, text: "Honestly addicted to their sev puri and mango falooda. Service is quick and warm." },
   { name: "Deepak M.", role: "Madinat Zayed", rating: 5, text: "Everything is fresh and full of flavour. Feels like a proper Indian street food festival." },
 ];
+
+// Gallery tiles for the Instagram-style grid + lightbox.
+// Drop matching photos in /public/images/ (filenames below); each
+// gracefully falls back to a branded emoji tile via DishImage.
+export const GALLERY = [
+  { id: "pani-puri", name: "Pani Puri", emoji: "🫗", img: "pani-puri.jpg" },
+  { id: "bhel-puri", name: "Bhel Puri", emoji: "🥗", img: "bhel-puri.jpg" },
+  { id: "sev-puri", name: "Sev Puri", emoji: "🫓", img: "sev-puri.jpg" },
+  { id: "samosa", name: "Samosa Chaat", emoji: "🥟", img: "samosa.jpg" },
+  { id: "pav-bhaji", name: "Pav Bhaji", emoji: "🍛", img: "pav-bhaji.jpg" },
+  { id: "dosa", name: "Masala Dosa", emoji: "🌯", img: "dosa.jpg" },
+  { id: "dahi-puri", name: "Dahi Puri", emoji: "🥣", img: "dahi-puri.jpg" },
+  { id: "falooda", name: "Falooda", emoji: "🍨", img: "falooda.jpg" },
+];

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, Mail, MessageCircle, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESTAURANT, waLink } from "@/lib/utils";
+import OpenStatus from "@/components/OpenStatus";
 
 export default function Contact() {
   return (
@@ -71,6 +72,7 @@ export default function Contact() {
                 <Clock className="h-5 w-5 text-chili" />
                 <p className="mt-2 text-sm font-bold text-masala">Open daily</p>
                 <p className="text-sm text-masala/65">9:00 AM – 1:00 AM</p>
+                <OpenStatus className="mt-2" />
               </div>
               <a
                 href={`mailto:${RESTAURANT.email}`}

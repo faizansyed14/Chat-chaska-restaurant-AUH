@@ -65,3 +65,24 @@ create policy "auth write menu_items"
 --  2. Open the site at /admin/login and sign in.
 --  3. Click "Seed full menu" to import every dish from the printed menu.
 -- ============================================================
+
+-- ============================================================
+--  Settings table (for the admin-controlled promo banner, etc.)
+--  key = 'promo', value = { "enabled": true, "text": "20% off thali!" }
+-- ============================================================
+create table if not exists public.settings (
+  key        text primary key,
+  value      jsonb not null default '{}',
+  updated_at timestamptz default now()
+);
+
+alter table public.settings enable row level security;
+
+drop policy if exists "public read settings" on public.settings;
+create policy "public read settings"
+  on public.settings for select using (true);
+
+drop policy if exists "auth write settings" on public.settings;
+create policy "auth write settings"
+  on public.settings for all to authenticated
+  using (true) with check (true);

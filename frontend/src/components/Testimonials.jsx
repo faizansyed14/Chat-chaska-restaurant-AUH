@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { TESTIMONIALS } from "@/lib/menuData";
+import { useCountUp } from "@/lib/useCountUp";
+import { RESTAURANT } from "@/lib/utils";
 
 function GoogleG({ className = "" }) {
   return (
@@ -14,6 +16,8 @@ function GoogleG({ className = "" }) {
 }
 
 export default function Testimonials() {
+  const count = useCountUp(1000);
+
   return (
     <section id="reviews" className="bg-masala relative overflow-hidden py-16 text-cream sm:py-24">
       <div className="pointer-events-none absolute -left-32 -top-32 h-80 w-80 rounded-full bg-saffron/10 blur-3xl" />
@@ -47,9 +51,9 @@ export default function Testimonials() {
             </div>
           </div>
           <div className="h-12 w-px bg-cream/15 hidden sm:block" />
-          <div>
+          <div ref={count.ref}>
             <span className="font-display text-4xl font-black text-cream">
-              1,000+
+              {count.value.toLocaleString()}+
             </span>
             <p className="text-sm font-bold text-cream/80">
               Happy customers & counting
@@ -64,6 +68,15 @@ export default function Testimonials() {
           <h2 className="mt-1 font-display text-4xl font-black lg:text-5xl">
             What our guests say
           </h2>
+          <a
+            href={RESTAURANT.reviewUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-cream px-5 py-2.5 text-sm font-bold text-masala shadow-warm transition-transform hover:-translate-y-0.5"
+          >
+            <Star className="h-4 w-4 fill-saffron text-saffron" />
+            Loved it? Leave us a Google review
+          </a>
         </div>
       </div>
 

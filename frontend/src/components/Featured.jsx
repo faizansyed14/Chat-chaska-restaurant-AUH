@@ -48,10 +48,6 @@ export default function Featured() {
                   <h3 className="font-display text-xl font-bold text-masala">
                     {d.name}
                   </h3>
-                  <span className="shrink-0 font-display text-lg font-black text-chili">
-                    {d.price}
-                    <span className="text-xs"> AED</span>
-                  </span>
                 </div>
                 <p className="mt-1.5 text-sm leading-relaxed text-masala/60">
                   {d.desc}

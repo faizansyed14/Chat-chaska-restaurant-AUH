@@ -1,6 +1,6 @@
-import { forwardRef, useRef, useState, useEffect } from "react";
+import { forwardRef, useRef, useState, useEffect, useMemo } from "react";
 import HTMLFlipBook from "react-pageflip";
-import { ChevronLeft, ChevronRight, Utensils } from "lucide-react";
+import { ChevronLeft, ChevronRight, Utensils, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Navbar";
 
@@ -11,7 +11,6 @@ const ACCENTS = {
   turmeric: "#E58300",
 };
 
-// A single page of the book. Must forward ref for react-pageflip.
 const Page = forwardRef(({ children, side }, ref) => (
   <div
     ref={ref}
@@ -24,7 +23,7 @@ const Page = forwardRef(({ children, side }, ref) => (
 ));
 Page.displayName = "Page";
 
-function CategoryPage({ cat, side }) {
+function CategoryPage({ cat, side, highlight }) {
   const accent = ACCENTS[cat.accent] || ACCENTS.saffron;
   return (
     <div className="flex h-full flex-col">
@@ -37,15 +36,28 @@ function CategoryPage({ cat, side }) {
         </h3>
       </div>
       <ul className="mt-4 flex-1 space-y-2 overflow-y-auto pr-1">
-        {cat.items.map((it, i) => (
-          <li key={i} className="flex items-baseline text-[13px] sm:text-sm">
-            <span className="font-semibold text-masala/90">{it.name}</span>
-            <span className="dotted-rule" />
-            <span className="font-display font-bold" style={{ color: accent }}>
-              {Number(it.price).toFixed(2)}
-            </span>
-          </li>
-        ))}
+        {cat.items.map((it, i) => {
+          const isMatch =
+            highlight &&
+            it.name.toLowerCase().includes(highlight.toLowerCase());
+          return (
+            <li
+              key={i}
+              className={`flex items-baseline rounded-lg px-1 text-[13px] transition-colors sm:text-sm ${
+                isMatch ? "bg-saffron/20" : ""
+              }`}
+            >
+              <span className="font-semibold text-masala/90">{it.name}</span>
+              <span className="dotted-rule" />
+              <span
+                className="font-display font-bold"
+                style={{ color: accent }}
+              >
+                {Number(it.price).toFixed(2)}
+              </span>
+            </li>
+          );
+        })}
       </ul>
       <p className="mt-3 text-center text-[10px] font-bold uppercase tracking-widest text-masala/40">
         All prices in AED · Pure Vegetarian
@@ -59,8 +71,9 @@ export default function BookMenu({ categories }) {
   const [page, setPage] = useState(0);
   const [dims, setDims] = useState({ w: 360, h: 490, mode: "mobile" });
   const wrapRef = useRef(null);
+  const [query, setQuery] = useState("");
+  const [searchMsg, setSearchMsg] = useState("");
 
-  // total pages = cover + categories + back cover
   const total = categories.length + 2;
 
   useEffect(() => {
@@ -69,11 +82,9 @@ export default function BookMenu({ categories }) {
       const cw = wrapRef.current?.offsetWidth || vw;
       let w, mode;
       if (vw < 768) {
-        // Phones / small tablets: single page fitted to the screen.
         mode = "mobile";
         w = Math.max(260, Math.min(cw, 420));
       } else {
-        // Desktop: two-page spread, each page clamped.
         mode = "desktop";
         w = Math.max(300, Math.min(440, Math.floor((cw - 24) / 2)));
       }
@@ -91,7 +102,6 @@ export default function BookMenu({ categories }) {
     };
   }, []);
 
-  // The flip-book remounts when its size changes, so reset to the cover.
   useEffect(() => {
     setPage(0);
   }, [dims.w, dims.mode]);
@@ -99,25 +109,95 @@ export default function BookMenu({ categories }) {
   const flipPrev = () => book.current?.pageFlip()?.flipPrev();
   const flipNext = () => book.current?.pageFlip()?.flipNext();
 
+  // When the user searches, jump to the first category page that has a match.
+  // Page index: 0 = front cover, 1..N = categories, N+1 = back cover.
+  const handleSearch = (q) => {
+    setQuery(q);
+    setSearchMsg("");
+    if (!q.trim()) return;
+
+    const lq = q.toLowerCase();
+    const nq = q.toLowerCase().replace(/[^a-z0-9]/g, ""); // Normalized search query (no spaces/punctuation)
+
+    let bestIdx = -1;
+    let bestScore = -1;
+
+    categories.forEach((cat, idx) => {
+      let score = 0;
+
+      const title = cat.title.toLowerCase();
+      const nTitle = title.replace(/[^a-z0-9]/g, "");
+      const sub = cat.subtitle.toLowerCase();
+
+      // Category matches
+      if (title === lq || nTitle === nq) score = 100;
+      else if (title.startsWith(lq) || nTitle.startsWith(nq)) score = 90;
+      else if (title.includes(lq) || nTitle.includes(nq)) score = 60;
+      else if (sub.includes(lq)) score = 40;
+
+      // Item matches
+      cat.items.forEach((it) => {
+        const name = it.name.toLowerCase();
+        const nName = name.replace(/[^a-z0-9]/g, "");
+        let itemScore = 0;
+
+        if (name === lq || nName === nq) itemScore = 95;
+        else if (name.startsWith(lq) || nName.startsWith(nq)) itemScore = 85;
+        else if (name.includes(lq) || nName.includes(nq)) itemScore = 50;
+
+        if (itemScore > score) score = itemScore;
+      });
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestIdx = idx;
+      }
+    });
+
+    if (bestIdx !== -1 && bestScore > 20) {
+      book.current?.pageFlip()?.flip(bestIdx + 1);
+      setSearchMsg(`Found in "${categories[bestIdx].title}" — page ${bestIdx + 2}`);
+    } else {
+      setSearchMsg("No dishes found.");
+    }
+  };
+
   return (
-    <section id="menu" className="relative py-16 sm:py-24">
+    <div className="relative pb-4">
       <div className="container">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="font-script text-2xl text-chili sm:text-3xl">
-            Turn the pages
-          </span>
-          <h2 className="mt-1 font-display text-3xl font-black text-masala sm:text-4xl lg:text-5xl">
-            Our full menu
-          </h2>
-          <p className="mt-3 text-base text-masala/70 sm:mt-4 sm:text-lg">
-            Flip through our menu just like a real book — use the arrows or drag
-            the page corner.
-          </p>
+        {/* ── Compact search bar above the book ── */}
+        <div className="mx-auto mt-6 max-w-sm sm:mt-8">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-masala/40" />
+            <input
+              value={query}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search menu… e.g. paneer, dosa"
+              className="w-full rounded-full border-2 border-input bg-white py-2.5 pl-10 pr-10 text-sm font-medium shadow-soft outline-none focus:border-saffron"
+            />
+            {query && (
+              <button
+                onClick={() => {
+                  setQuery("");
+                  setSearchMsg("");
+                }}
+                className="absolute right-3 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full bg-masala/8 text-masala/60 hover:bg-masala/15"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+          {searchMsg && (
+            <p className="mt-2 text-center text-xs font-bold text-chili">
+              {searchMsg}
+            </p>
+          )}
         </div>
 
+        {/* ── Flip-book ── */}
         <div
           ref={wrapRef}
-          className="mx-auto mt-10 flex w-full max-w-4xl flex-col items-center sm:mt-12"
+          className="mx-auto mt-6 flex w-full max-w-4xl flex-col items-center sm:mt-8"
         >
           <div className="book-shadow w-full max-w-full px-1">
             <div className="mx-auto w-max max-w-full">
@@ -137,45 +217,48 @@ export default function BookMenu({ categories }) {
                 onFlip={(e) => setPage(e.data)}
                 className="mx-auto"
               >
-              {/* Front cover */}
-              <Page side="right">
-                <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-masala to-[#5e1209] p-8 text-center text-cream">
-                  <Logo light />
-                  <div className="my-6 h-px w-24 bg-saffron/60" />
-                  <Utensils className="h-10 w-10 text-saffron" />
-                  <h3 className="mt-4 font-display text-3xl font-black">
-                    The Menu
-                  </h3>
-                  <p className="mt-2 font-script text-2xl text-saffron">
-                    Nasha · Chaska · Zaika
-                  </p>
-                  <p className="mt-8 text-xs uppercase tracking-[0.3em] text-cream/60">
-                    Tap the corner to begin
-                  </p>
-                </div>
-              </Page>
-
-              {/* Category pages */}
-              {categories.map((cat, i) => (
-                <Page key={cat.id} side={i % 2 === 0 ? "left" : "right"}>
-                  <CategoryPage cat={cat} side={i % 2 === 0 ? "left" : "right"} />
+                {/* Front cover */}
+                <Page side="right">
+                  <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-masala to-[#5e1209] p-8 text-center text-cream">
+                    <Logo light />
+                    <div className="my-6 h-px w-24 bg-saffron/60" />
+                    <Utensils className="h-10 w-10 text-saffron" />
+                    <h3 className="mt-4 font-display text-3xl font-black">
+                      The Menu
+                    </h3>
+                    <p className="mt-2 font-script text-2xl text-saffron">
+                      Nasha · Chaska · Zaika
+                    </p>
+                    <p className="mt-8 text-xs uppercase tracking-[0.3em] text-cream/60">
+                      Tap the corner to begin
+                    </p>
+                  </div>
                 </Page>
-              ))}
 
-              {/* Back cover */}
-              <Page side="left">
-                <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-saffron to-chili p-8 text-center text-white">
-                  <h3 className="font-display text-3xl font-black">
-                    Thank you!
-                  </h3>
-                  <p className="mt-3 max-w-[18rem] text-sm leading-relaxed text-white/90">
-                    We serve street food with pride — from our heart to your
-                    plate. We hope to see you again soon for another round of
-                    delicious chaat!
-                  </p>
-                  <p className="mt-6 font-script text-2xl">Chaat Chaska ✦</p>
-                </div>
-              </Page>
+                {/* Category pages */}
+                {categories.map((cat, i) => (
+                  <Page key={cat.id} side={i % 2 === 0 ? "left" : "right"}>
+                    <CategoryPage
+                      cat={cat}
+                      side={i % 2 === 0 ? "left" : "right"}
+                      highlight={query}
+                    />
+                  </Page>
+                ))}
+
+                {/* Back cover */}
+                <Page side="left">
+                  <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-saffron to-chili p-8 text-center text-white">
+                    <h3 className="font-display text-3xl font-black">
+                      Thank you!
+                    </h3>
+                    <p className="mt-3 max-w-[18rem] text-sm leading-relaxed text-white/90">
+                      We serve street food with pride — from our heart to your
+                      plate. We hope to see you again soon!
+                    </p>
+                    <p className="mt-6 font-script text-2xl">Chaat Chaska ✦</p>
+                  </div>
+                </Page>
               </HTMLFlipBook>
             </div>
           </div>
@@ -206,6 +289,6 @@ export default function BookMenu({ categories }) {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

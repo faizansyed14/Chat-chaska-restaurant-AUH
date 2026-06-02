@@ -10,6 +10,7 @@ import {
   Database,
   Loader2,
   Utensils,
+  Megaphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Card } from "@/components/ui/index";
@@ -26,6 +27,7 @@ export default function AdminDashboard() {
   const [newItem, setNewItem] = useState({ name: "", price: "" });
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState("");
+  const [promo, setPromo] = useState({ enabled: false, text: "" });
 
   const flash = (m) => {
     setToast(m);
@@ -59,6 +61,26 @@ export default function AdminDashboard() {
     setCats(c || []);
     setItems(i || []);
     if (c?.length && !activeCat) setActiveCat(c[0].id);
+    // Load promo setting
+    try {
+      const { data: ps } = await supabase
+        .from("settings")
+        .select("value")
+        .eq("key", "promo")
+        .single();
+      if (ps?.value) setPromo(ps.value);
+    } catch { /* no promo row yet — ignore */ }
+  }
+
+  async function savePromo() {
+    try {
+      await supabase
+        .from("settings")
+        .upsert({ key: "promo", value: promo }, { onConflict: "key" });
+      flash("Promo saved ✦");
+    } catch (e) {
+      flash("Error: " + e.message);
+    }
   }
 
   async function seedDatabase() {
@@ -205,6 +227,44 @@ export default function AdminDashboard() {
       )}
 
       <div className="container py-8">
+        {/* Promo Banner editor */}
+        {isSupabaseConfigured && (
+          <Card className="mb-6 p-5">
+            <div className="flex items-center gap-2">
+              <Megaphone className="h-5 w-5 text-saffron" />
+              <Label className="text-base">Promo Banner</Label>
+              <span className="ml-auto flex items-center gap-2 text-sm font-bold">
+                <span className={promo.enabled ? "text-leaf" : "text-masala/50"}>
+                  {promo.enabled ? "Active" : "Off"}
+                </span>
+                <button
+                  onClick={() => setPromo((p) => ({ ...p, enabled: !p.enabled }))}
+                  className={`relative h-6 w-11 rounded-full transition-colors ${
+                    promo.enabled ? "bg-leaf" : "bg-masala/20"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform ${
+                      promo.enabled ? "translate-x-5" : "translate-x-0.5"
+                    }`}
+                  />
+                </button>
+              </span>
+            </div>
+            <div className="mt-3 flex gap-2">
+              <Input
+                value={promo.text}
+                onChange={(e) => setPromo((p) => ({ ...p, text: e.target.value }))}
+                placeholder="e.g. 20% off all thalis this week! 🎉"
+                className="flex-1"
+              />
+              <Button onClick={savePromo} className="gap-1 shrink-0">
+                <Save className="h-4 w-4" /> Save
+              </Button>
+            </div>
+          </Card>
+        )}
+
         {cats.length === 0 ? (
           <Card className="mx-auto max-w-xl p-10 text-center">
             <Utensils className="mx-auto h-10 w-10 text-saffron" />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Star, ArrowRight, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { waLink } from "@/lib/utils";
@@ -15,6 +15,8 @@ const item = {
 
 export default function Hero() {
   const [imgError, setImgError] = useState(false);
+  const { scrollY } = useScroll();
+  const yImg = useTransform(scrollY, [0, 600], [0, -60]);
 
   return (
     <section
@@ -125,7 +127,7 @@ export default function Hero() {
         </div>
 
         {/* Hero visual — your bg.jpg, full image, just shorter */}
-        <motion.div variants={item} className="relative mx-auto w-fit">
+        <motion.div variants={item} style={{ y: yImg }} className="relative mx-auto w-fit">
           <div className="absolute -inset-3 -z-10 rounded-[2.5rem] bg-gradient-to-br from-saffron/30 to-chili/20 blur-2xl" />
           <div className="relative animate-float rounded-[2rem] bg-gradient-to-br from-saffron to-chili p-1.5 shadow-warm sm:rounded-[2.5rem]">
             {!imgError ? (

@@ -1,0 +1,17 @@
+{
+  "name": "Chaat Chaska — Indian Street Food",
+  "short_name": "Chaat Chaska",
+  "description": "Authentic Indian street food in Abu Dhabi.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF7EC",
+  "theme_color": "#7A1E12",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

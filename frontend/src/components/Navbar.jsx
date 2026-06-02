@@ -3,12 +3,14 @@ import { motion } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { waLink } from "@/lib/utils";
+import OpenStatus from "@/components/OpenStatus";
 
 const LINKS = [
   { label: "Home", href: "#home" },
   { label: "Story", href: "#about" },
   { label: "Specials", href: "#signature" },
   { label: "Menu", href: "#menu" },
+  { label: "Gallery", href: "#gallery" },
   { label: "Reviews", href: "#reviews" },
   { label: "Visit", href: "#contact" },
 ];
@@ -25,8 +27,9 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 bg-white transition-all duration-300 ${scrolled ? "shadow-soft py-1" : "py-1.5"
-        }`}
+      className={`fixed inset-x-0 top-0 z-50 bg-white transition-all duration-300 ${
+        scrolled ? "shadow-soft py-1" : "py-1.5"
+      }`}
     >
       <nav className="container flex items-center justify-between gap-2">
         <a href="#home" className="flex shrink-0 items-center gap-2 sm:gap-3">
@@ -34,26 +37,27 @@ export default function Navbar() {
           <AnimatedWordmark />
         </a>
 
-        <div className="hidden items-center gap-1 lg:flex">
+        <div className="hidden items-center gap-1 xl:flex">
           {LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="rounded-full px-4 py-2 text-sm font-bold text-masala/80 transition-colors hover:bg-masala/5 hover:text-masala"
+              className="rounded-full px-3 py-2 text-sm font-bold text-masala/80 transition-colors hover:bg-masala/5 hover:text-masala"
             >
               {l.label}
             </a>
           ))}
         </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        <div className="hidden items-center gap-2 lg:flex">
+          <OpenStatus className="hidden xl:inline-flex" />
           <a href="tel:+97126500101">
             <Button variant="outline" size="sm" className="gap-2">
               <Phone className="h-4 w-4" /> Call
             </Button>
           </a>
           <a href={waLink()} target="_blank" rel="noreferrer">
-            <Button variant="whatsapp">Order on WhatsApp</Button>
+            <Button variant="whatsapp" size="sm">Order on WhatsApp</Button>
           </a>
         </div>
 
@@ -69,6 +73,9 @@ export default function Navbar() {
       {open && (
         <div className="container mt-2 lg:hidden">
           <div className="rounded-3xl border border-border bg-cream p-4 shadow-warm">
+            <div className="mb-2 flex justify-center">
+              <OpenStatus />
+            </div>
             {LINKS.map((l) => (
               <a
                 key={l.href}
@@ -96,14 +103,6 @@ export default function Navbar() {
   );
 }
 
-/**
- * Animated wordmark beside the logo.
- * - "Chaat" fades up into place, then "Chaska" glides in from the left.
- * - Loops forever, replaying every 5 seconds.
- * - Lives inside a FIXED-WIDTH box so the animation NEVER shifts the
- *   surrounding navbar elements. Transforms/opacity don't affect layout.
- * - Shown on every screen size (between the logo and the hamburger on mobile).
- */
 function AnimatedWordmark() {
   const [cycle, setCycle] = useState(0);
 
@@ -140,8 +139,6 @@ function AnimatedWordmark() {
 }
 
 export function Logo({ light = false, className = "" }) {
-  // Uses your real logo at /public/images/logo.jpg.
-  // If the file isn't present yet, it gracefully falls back to a drawn mark.
   const [errored, setErrored] = useState(false);
 
   if (!errored) {
@@ -150,24 +147,18 @@ export function Logo({ light = false, className = "" }) {
         src="/images/logo.jpg"
         alt="Chaat Chaska — Indian Street Food"
         onError={() => setErrored(true)}
-        className={`h-9 w-auto shrink-0 object-contain sm:h-11 ${light ? "rounded-xl bg-white p-1.5" : ""
-          } ${className}`}
+        className={`h-9 w-auto shrink-0 object-contain sm:h-11 ${
+          light ? "rounded-xl bg-white p-1.5" : ""
+        } ${className}`}
       />
     );
   }
 
-  // Fallback mark
   return (
     <div className={`flex shrink-0 items-center ${className}`}>
       <svg viewBox="0 0 100 100" className="h-9 w-9 sm:h-11 sm:w-11">
-        <path
-          d="M70 22 A30 30 0 1 0 70 78 L70 64 A16 16 0 1 1 70 36 Z"
-          fill="#E23A1E"
-        />
-        <path
-          d="M62 34 A18 18 0 1 0 62 66 L62 56 A8 8 0 1 1 62 44 Z"
-          fill="#F4900C"
-        />
+        <path d="M70 22 A30 30 0 1 0 70 78 L70 64 A16 16 0 1 1 70 36 Z" fill="#E23A1E" />
+        <path d="M62 34 A18 18 0 1 0 62 66 L62 56 A8 8 0 1 1 62 44 Z" fill="#F4900C" />
         <rect x="64" y="30" width="14" height="14" rx="3" fill="#E23A1E" />
       </svg>
     </div>
