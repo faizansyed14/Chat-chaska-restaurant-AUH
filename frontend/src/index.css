@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 100% 96%;
+    --foreground: 8 60% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 8 60% 14%;
+    --primary: 9 78% 50%;
+    --primary-foreground: 36 100% 97%;
+    --secondary: 33 90% 50%;
+    --secondary-foreground: 8 60% 14%;
+    --muted: 36 40% 90%;
+    --muted-foreground: 8 20% 38%;
+    --accent: 45 90% 62%;
+    --accent-foreground: 8 60% 14%;
+    --border: 30 35% 84%;
+    --input: 30 35% 84%;
+    --ring: 9 78% 50%;
+    --radius: 1rem;
+  }
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: "Hanken Grotesk", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Warm paper / spice-market backdrop */
+.bg-spice {
+  background-color: #fff7ec;
+  background-image: radial-gradient(
+      circle at 12% 18%,
+      rgba(244, 144, 12, 0.12),
+      transparent 38%
+    ),
+    radial-gradient(circle at 88% 8%, rgba(226, 58, 30, 0.1), transparent 40%),
+    radial-gradient(circle at 75% 92%, rgba(62, 124, 74, 0.08), transparent 42%);
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Dashed "menu card" divider used through the site */
+.dotted-rule {
+  flex: 1;
+  border-bottom: 2px dotted hsl(var(--border));
+  margin: 0 0.5rem 0.35rem;
+}
+
+/* Custom marigold scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #fff1dc;
+}
+::-webkit-scrollbar-thumb {
+  background: #f4900c;
+  border-radius: 99px;
+  border: 2px solid #fff1dc;
+}
+
+/* react-pageflip needs the wrapper to allow shadows */
+.book-shadow {
+  filter: drop-shadow(0 30px 50px rgba(122, 30, 18, 0.35));
+}
+
+.menu-page {
+  background-color: #fffdf8;
+  background-image: radial-gradient(
+    circle at 100% 0,
+    rgba(244, 144, 12, 0.08),
+    transparent 30%
+  );
+}
+.menu-page-left {
+  box-shadow: inset -14px 0 24px -16px rgba(122, 30, 18, 0.4);
+}
+.menu-page-right {
+  box-shadow: inset 14px 0 24px -16px rgba(122, 30, 18, 0.4);
+}
