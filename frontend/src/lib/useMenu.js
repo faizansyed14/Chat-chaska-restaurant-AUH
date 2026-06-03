@@ -28,7 +28,7 @@ export function useMenu() {
         if (e2) throw e2;
 
         if (!cats?.length) {
-          // DB empty — keep the bundled fallback so the site never looks bare.
+          // DB empty - keep the bundled fallback so the site never looks bare.
           if (active) setLoading(false);
           return;
         }

@@ -26,7 +26,7 @@ export default function PromoBanner() {
           if (seen === data.value.text) setDismissed(true);
         }
       } catch {
-        /* no promo configured — ignore */
+        /* no promo configured - ignore */
       }
     })();
     return () => {

@@ -69,7 +69,7 @@ export default function AdminDashboard() {
         .eq("key", "promo")
         .single();
       if (ps?.value) setPromo(ps.value);
-    } catch { /* no promo row yet — ignore */ }
+    } catch { /* no promo row yet - ignore */ }
   }
 
   async function savePromo() {
@@ -286,7 +286,7 @@ export default function AdminDashboard() {
           </Card>
         ) : (
           <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
-            {/* Category sidebar — horizontal strip on mobile, column on desktop */}
+            {/* Category sidebar - horizontal strip on mobile, column on desktop */}
             <aside className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2 lg:mx-0 lg:flex-col lg:space-y-1.5 lg:overflow-visible lg:px-0 lg:pb-0">
               <p className="hidden px-2 text-xs font-bold uppercase tracking-widest text-masala/50 lg:block">
                 Categories

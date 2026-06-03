@@ -73,7 +73,7 @@ export default function Hero() {
             variants={item}
             className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-masala/70 sm:mt-6 sm:text-lg lg:mx-0"
           >
-            From the first crunch of pani puri to the last spoon of falooda —
+            From the first crunch of pani puri to the last spoon of falooda -
             Chaat Chaska brings the vibrant flavours of India's bazaars to the
             heart of Abu Dhabi. Freshly made, every single bite.
           </motion.p>
@@ -126,7 +126,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Hero visual — your bg.jpg, full image, just shorter */}
+        {/* Hero visual - your bg.jpg, full image, just shorter */}
         <motion.div variants={item} style={{ y: yImg }} className="relative mx-auto w-fit">
           <div className="absolute -inset-3 -z-10 rounded-[2.5rem] bg-gradient-to-br from-saffron/30 to-chili/20 blur-2xl" />
           <div className="relative animate-float rounded-[2rem] bg-gradient-to-br from-saffron to-chili p-1.5 shadow-warm sm:rounded-[2.5rem]">

@@ -1,4 +1,4 @@
-// Lightweight i18n — translates UI chrome (not the menu item names,
+// Lightweight i18n - translates UI chrome (not the menu item names,
 // which stay as their proper culinary names). Arabic flips the layout to RTL.
 
 export const LANGUAGES = [

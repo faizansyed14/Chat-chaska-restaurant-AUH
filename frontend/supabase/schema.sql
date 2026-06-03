@@ -1,5 +1,5 @@
 -- ============================================================
---  Chaat Chaska — Supabase schema
+--  Chaat Chaska - Supabase schema
 --  Run this in the Supabase SQL Editor (Dashboard -> SQL -> New query).
 -- ============================================================
 

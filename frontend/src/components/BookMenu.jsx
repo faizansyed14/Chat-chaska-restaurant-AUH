@@ -156,7 +156,7 @@ export default function BookMenu({ categories }) {
 
     if (bestIdx !== -1 && bestScore > 20) {
       book.current?.pageFlip()?.flip(bestIdx + 1);
-      setSearchMsg(`Found in "${categories[bestIdx].title}" — page ${bestIdx + 2}`);
+      setSearchMsg(`Found in "${categories[bestIdx].title}" - page ${bestIdx + 2}`);
     } else {
       setSearchMsg("No dishes found.");
     }
@@ -253,7 +253,7 @@ export default function BookMenu({ categories }) {
                       Thank you!
                     </h3>
                     <p className="mt-3 max-w-[18rem] text-sm leading-relaxed text-white/90">
-                      We serve street food with pride — from our heart to your
+                      We serve street food with pride - from our heart to your
                       plate. We hope to see you again soon!
                     </p>
                     <p className="mt-6 font-script text-2xl">Chaat Chaska ✦</p>

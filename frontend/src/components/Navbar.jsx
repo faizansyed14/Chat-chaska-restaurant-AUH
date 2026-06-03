@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,12 @@ export default function Navbar() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <OpenStatus className="hidden xl:inline-flex" />
+          <Link
+            to="/admin/login"
+            className="inline-flex h-8 items-center rounded-full border border-masala/20 px-3 text-xs font-bold text-masala/70 transition-colors hover:bg-masala/5 hover:text-masala"
+          >
+            Admin
+          </Link>
           <a href="tel:+97126500101">
             <Button variant="outline" size="sm" className="gap-2">
               <Phone className="h-4 w-4" /> Call
@@ -145,7 +152,7 @@ export function Logo({ light = false, className = "" }) {
     return (
       <img
         src="/images/logo.jpg"
-        alt="Chaat Chaska — Indian Street Food"
+        alt="Chaat Chaska - Indian Street Food"
         onError={() => setErrored(true)}
         className={`h-9 w-auto shrink-0 object-contain sm:h-11 ${
           light ? "rounded-xl bg-white p-1.5" : ""

@@ -1,4 +1,4 @@
-// Full Chaat Chaska menu — used as the fallback/seed.
+// Full Chaat Chaska menu - used as the fallback/seed.
 // When Supabase is configured the live data overrides this.
 // Each category has a Hindi-styled title + English subtitle.
 
@@ -369,7 +369,7 @@ export const SIGNATURE = [
 ];
 
 export const TESTIMONIALS = [
-  { name: "Aisha R.", role: "Madinat Zayed", rating: 5, text: "The pani puri here is unreal — exactly like the streets of Mumbai. We come back every weekend." },
+  { name: "Aisha R.", role: "Madinat Zayed", rating: 5, text: "The pani puri here is unreal - exactly like the streets of Mumbai. We come back every weekend." },
   { name: "Rohan K.", role: "Musaffah", rating: 5, text: "Best dosa in Abu Dhabi, hands down. Crispy, huge, and the chutneys are next level." },
   { name: "Fatima A.", role: "Khalifa City", rating: 5, text: "Clean, friendly, and the pav bhaji tastes like home. The falooda is a must-try." },
   { name: "Vikram S.", role: "Al Wahda", rating: 5, text: "Authentic chaat with a modern touch. The combo platter is perfect for sharing." },

@@ -1,7 +1,7 @@
-# 🍛 Chaat Chaska — Restaurant Website
+# 🍛 Chaat Chaska - Restaurant Website
 
 A modern, animated full-stack website for **Chaat Chaska**, authentic Indian
-street food in Abu Dhabi. Built to look genuinely designed — not "vibe-coded".
+street food in Abu Dhabi. Built to look genuinely designed - not "vibe-coded".
 
 **Stack:** React + Vite · Tailwind CSS · shadcn-style UI · Framer Motion ·
 react-pageflip (flip-book menu) · Supabase (database + auth) · optional
@@ -14,18 +14,18 @@ Node/Express backend.
 - **Striking hero** with staggered reveals & floating dish doodles
 - **Animated marquee** of dish names
 - **Story / About** section with brand values
-- **Signature dishes grid** — each card orders straight to WhatsApp
-- **Flip-book menu** 📖 — turn pages with the left/right buttons or by dragging
+- **Signature dishes grid** - each card orders straight to WhatsApp
+- **Flip-book menu** 📖 - turn pages with the left/right buttons or by dragging
   the corner; contains the *entire* printed menu (every category & price)
 - **Google rating banner** (4.8 ★, 1,000+ reviews) + **testimonials**
 - **Contact** with one-tap **WhatsApp** (`+971 50 751 3245`) and the embedded
   **Google Map**
 - **Floating WhatsApp button** on every screen
-- **Admin panel** (`/admin`) — log in, add/edit/delete dishes, change prices,
+- **Admin panel** (`/admin`) - log in, add/edit/delete dishes, change prices,
   hide/show items. One click seeds the whole menu into your database.
 - Fully **responsive** + custom branded styling (marigold, masala-red, cream).
 
-> The site works **immediately** with the bundled menu data — Supabase is only
+> The site works **immediately** with the bundled menu data - Supabase is only
 > needed to make the menu editable from the admin panel.
 
 ---
@@ -38,7 +38,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 — done. The full menu, animations, map and WhatsApp
+Open http://localhost:5173 - done. The full menu, animations, map and WhatsApp
 all work out of the box.
 
 To build for production:

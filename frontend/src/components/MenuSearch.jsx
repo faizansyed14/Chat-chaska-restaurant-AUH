@@ -63,7 +63,7 @@ export default function MenuSearch({ categories }) {
         ))}
       </div>
 
-      {/* Results — only shown when the user is actively searching/filtering */}
+      {/* Results - only shown when the user is actively searching/filtering */}
       {active && (
         <motion.div
           initial={{ opacity: 0, y: 8 }}

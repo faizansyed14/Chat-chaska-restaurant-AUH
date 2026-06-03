@@ -11,7 +11,7 @@ import {
 let idSeq = 1;
 const nextId = () => idSeq++;
 
-// Bot avatar — uses the Chaat Chaska logo, falls back to a drawn mark.
+// Bot avatar - uses the Chaat Chaska logo, falls back to a drawn mark.
 function BotAvatar({ className = "" }) {
   const [err, setErr] = useState(false);
   if (!err)

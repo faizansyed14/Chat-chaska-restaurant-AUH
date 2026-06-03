@@ -14,7 +14,7 @@ export default function Contact() {
             Visit us in Abu Dhabi
           </h2>
           <p className="mt-4 text-lg text-masala/70">
-            Dine in, take away, or order on WhatsApp — we'd love to feed you.
+            Dine in, take away, or order on WhatsApp - we'd love to feed you.
           </p>
         </div>
 

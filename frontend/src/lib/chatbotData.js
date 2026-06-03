@@ -1,5 +1,5 @@
 // ============================================================
-//  Chaat Chaska — Chatbot knowledge base (rules-based, no AI)
+//  Chaat Chaska - Chatbot knowledge base (rules-based, no AI)
 //  Each intent has keywords (with common variants/misspellings)
 //  and an answer. The matcher in this file is fuzzy, so small
 //  spelling mistakes still resolve to the right answer.
@@ -8,7 +8,7 @@
 import { RESTAURANT, waLink } from "@/lib/utils";
 
 export const GREETING =
-  "Namaste! 🙏 Welcome to Chaat Chaska. I'm your menu buddy — ask me about our dishes, prices, location, timings, delivery, or anything else!";
+  "Namaste! 🙏 Welcome to Chaat Chaska. I'm your menu buddy - ask me about our dishes, prices, location, timings, delivery, or anything else!";
 
 export const FALLBACK =
   "Sorry, I didn't quite get that 😅. You can ask me about our menu, popular dishes, prices, location, opening hours, delivery, or how to order. Try one of the quick options below!";
@@ -34,7 +34,7 @@ export const INTENTS = [
       "good morning", "good evening", "yo", "hola", "start",
     ],
     answer:
-      "Hello! 😊 Great to see you at Chaat Chaska. How can I help — menu, prices, location, or ordering?",
+      "Hello! 😊 Great to see you at Chaat Chaska. How can I help - menu, prices, location, or ordering?",
   },
   {
     id: "about",
@@ -43,7 +43,7 @@ export const INTENTS = [
       "story", "info", "information", "introduce", "describe", "what do you do",
     ],
     answer:
-      "Chaat Chaska is a popular destination for authentic Indian street food in Abu Dhabi 🇮🇳. We serve traditional chaat with a modern touch — freshly prepared, 100% vegetarian, in a clean and welcoming space. From our heart to your plate! ❤️",
+      "Chaat Chaska is a popular destination for authentic Indian street food in Abu Dhabi 🇮🇳. We serve traditional chaat with a modern touch - freshly prepared, 100% vegetarian, in a clean and welcoming space. From our heart to your plate! ❤️",
   },
   {
     id: "location",
@@ -54,7 +54,7 @@ export const INTENTS = [
       "shabia", "map", "directions", "how to reach", "near",
     ],
     answer:
-      "We have two branches in Abu Dhabi 📍\n\n1️⃣ Madinat Zayed — Front of the Vegetable & Fish Market, behind Madina Zayed Mall.\n\n2️⃣ Shabia 11, Musaffah — Behind 24/7 Madina Hyper Market, MBZ 11.\n\nYou'll find a live map on our website's 'Visit' section!",
+      "We have two branches in Abu Dhabi 📍\n\n1️⃣ Madinat Zayed - Front of the Vegetable & Fish Market, behind Madina Zayed Mall.\n\n2️⃣ Shabia 11, Musaffah - Behind 24/7 Madina Hyper Market, MBZ 11.\n\nYou'll find a live map on our website's 'Visit' section!",
   },
   {
     id: "hours",
@@ -82,7 +82,7 @@ export const INTENTS = [
       "message you", "chat order",
     ],
     answer:
-      "The easiest way to order is on WhatsApp 🟢 — just tap the WhatsApp button (bottom-left) or message us at +971 50 751 3245. Tell us your items and branch, and we'll take it from there!",
+      "The easiest way to order is on WhatsApp 🟢 - just tap the WhatsApp button (bottom-left) or message us at +971 50 751 3245. Tell us your items and branch, and we'll take it from there!",
     action: { label: "Open WhatsApp", href: waLink() },
   },
   {
@@ -94,7 +94,7 @@ export const INTENTS = [
       "to go",
     ],
     answer:
-      "Yes! 🛵 You can order for takeaway or delivery — just message us on WhatsApp (+971 50 751 3245) with your items and address, and we'll arrange it. Dine-in is always welcome too!",
+      "Yes! 🛵 You can order for takeaway or delivery - just message us on WhatsApp (+971 50 751 3245) with your items and address, and we'll arrange it. Dine-in is always welcome too!",
     action: { label: "Order on WhatsApp", href: waLink() },
   },
   {
@@ -135,7 +135,7 @@ export const INTENTS = [
       "puchka", "pani poori", "pani", "puri water",
     ],
     answer:
-      "Pani Puri 🫗 is our signature! Aloo Masala style is 7 AED and Hot Ragda style is 8 AED. Crisp puris with spiced water — a burst of flavour in every bite!",
+      "Pani Puri 🫗 is our signature! Aloo Masala style is 7 AED and Hot Ragda style is 8 AED. Crisp puris with spiced water - a burst of flavour in every bite!",
   },
   {
     id: "dosa",
@@ -181,7 +181,7 @@ export const INTENTS = [
       "rajma", "kadhi", "chawal", "daily special",
     ],
     answer:
-      "Our 'Zaikedar Thali' changes daily and is just 15 AED — rice, dal, a veg curry, papad, sweet, salad & pickle 🍱. We also have Rajma Chawal, Kadhi Chawal and Chole Chawal at 12 AED each.",
+      "Our 'Zaikedar Thali' changes daily and is just 15 AED - rice, dal, a veg curry, papad, sweet, salad & pickle 🍱. We also have Rajma Chawal, Kadhi Chawal and Chole Chawal at 12 AED each.",
   },
   {
     id: "sweets",
@@ -227,7 +227,7 @@ export const INTENTS = [
       "rate", "rates", "charges", "aed", "dirham", "affordable",
     ],
     answer:
-      "Our prices are very pocket-friendly 💸 — most chaats are 7–12 AED, dosas 7–20 AED, thalis 15 AED, and drinks/desserts start as low as 2 AED. You can see exact prices on the flip-book menu on our site!",
+      "Our prices are very pocket-friendly 💸 - most chaats are 7–12 AED, dosas 7–20 AED, thalis 15 AED, and drinks/desserts start as low as 2 AED. You can see exact prices on the flip-book menu on our site!",
   },
   {
     id: "spicy",
@@ -245,7 +245,7 @@ export const INTENTS = [
       "dine in", "dinein", "dine-in", "sit", "family", "group", "party",
     ],
     answer:
-      "You're welcome to dine in anytime — it's mostly walk-in 🪑. For larger groups or family gatherings, give us a call (02 650 0101) and we'll get you sorted!",
+      "You're welcome to dine in anytime - it's mostly walk-in 🪑. For larger groups or family gatherings, give us a call (02 650 0101) and we'll get you sorted!",
   },
   {
     id: "catering",
@@ -270,7 +270,7 @@ export const INTENTS = [
     id: "parking",
     keywords: ["parking", "park", "car", "vehicle", "where to park"],
     answer:
-      "There's street parking available near both branches 🚗 — the Madinat Zayed outlet is right by the Vegetable & Fish Market, which is easy to reach.",
+      "There's street parking available near both branches 🚗 - the Madinat Zayed outlet is right by the Vegetable & Fish Market, which is easy to reach.",
   },
   {
     id: "instagram",
@@ -287,7 +287,7 @@ export const INTENTS = [
       "rated", "trusted", "popular reviews",
     ],
     answer:
-      "We're proud of our 4.8★ rating with 1,000+ happy customers on Google 🌟. Authentic taste, fresh food and warm service — come see why everyone keeps coming back!",
+      "We're proud of our 4.8★ rating with 1,000+ happy customers on Google 🌟. Authentic taste, fresh food and warm service - come see why everyone keeps coming back!",
   },
   {
     id: "offers",
@@ -390,7 +390,7 @@ function scoreIntent(query, queryTokens, intent) {
         if (qt === kw) {
           best = Math.max(best, 1.3);
         } else if (qt.length >= 3 && kw.length >= 3) {
-          // substring (e.g. "panipuri" contains "puri") — require the
+          // substring (e.g. "panipuri" contains "puri") - require the
           // shorter string be a meaningful chunk of the longer one.
           const shorter = qt.length < kw.length ? qt : kw;
           const longer = qt.length < kw.length ? kw : qt;

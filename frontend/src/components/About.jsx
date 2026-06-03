@@ -5,7 +5,7 @@ const VALUES = [
   {
     icon: Leaf,
     title: "100% Vegetarian",
-    text: "A wide variety of freshly prepared vegetarian dishes — pure, clean & authentic.",
+    text: "A wide variety of freshly prepared vegetarian dishes - pure, clean & authentic.",
   },
   {
     icon: Sparkles,
@@ -20,7 +20,7 @@ const VALUES = [
   {
     icon: HeartHandshake,
     title: "Made With Love",
-    text: "From our heart to your plate — street food served with genuine pride.",
+    text: "From our heart to your plate - street food served with genuine pride.",
   },
 ];
 
@@ -44,13 +44,13 @@ export default function About() {
             food, offering a vibrant and flavourful dining experience in the
             heart of Abu Dhabi. Tucked into the Madinat Zayed area, we've built
             a formidable reputation for delivering traditional chaat with a
-            modern touch — in a clean and welcoming environment.
+            modern touch - in a clean and welcoming environment.
           </p>
 
           <div className="mt-8 rounded-3xl border-2 border-dashed border-saffron/50 bg-white/60 p-6">
             <p className="font-display text-xl font-bold italic text-masala">
-              "If they buy once — you made a sale. If they come back — you built
-              trust. If they tell others — you built a brand."
+              "If they buy once - you made a sale. If they come back - you built
+              trust. If they tell others - you built a brand."
             </p>
             <p className="mt-3 font-bold text-chili">
               Sales make money. Trust makes a brand. ✦
