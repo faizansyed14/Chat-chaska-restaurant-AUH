@@ -95,9 +95,28 @@ body {
   border: 2px solid #fff1dc;
 }
 
-/* react-pageflip needs the wrapper to allow shadows */
+/* react-pageflip — stable box + smoother mobile flips */
 .book-shadow {
   filter: drop-shadow(0 30px 50px rgba(122, 30, 18, 0.35));
+}
+
+.book-stage {
+  position: relative;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@media (max-width: 767px) {
+  .book-shadow {
+    filter: drop-shadow(0 14px 28px rgba(122, 30, 18, 0.22));
+  }
+
+  .book-stage .stf__parent {
+    touch-action: manipulation;
+  }
 }
 
 .menu-page {
@@ -113,4 +132,9 @@ body {
 }
 .menu-page-right {
   box-shadow: inset 14px 0 24px -16px rgba(122, 30, 18, 0.4);
+}
+
+.menu-page-list {
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }

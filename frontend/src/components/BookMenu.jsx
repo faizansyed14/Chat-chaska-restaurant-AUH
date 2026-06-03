@@ -35,7 +35,7 @@ function CategoryPage({ cat }) {
           {cat.title}
         </h3>
       </div>
-      <ul className="mt-4 flex-1 space-y-2 overflow-y-auto pr-1">
+      <ul className="menu-page-list mt-4 flex-1 space-y-2 overflow-y-auto pr-1">
         {cat.items.map((it, i) => (
             <li
               key={i}
@@ -59,43 +59,60 @@ function CategoryPage({ cat }) {
   );
 }
 
+function measureBook(vw, containerWidth) {
+  const mobile = vw < 768;
+  const w = mobile
+    ? Math.max(280, Math.min(vw - 24, 400))
+    : Math.max(300, Math.min(440, Math.floor((containerWidth - 24) / 2)));
+  return { w, h: Math.round(w * 1.36), mode: mobile ? "mobile" : "desktop" };
+}
+
 export default function BookMenu({ categories }) {
   const book = useRef(null);
   const [page, setPage] = useState(0);
-  const [dims, setDims] = useState({ w: 360, h: 490, mode: "mobile" });
+  const [dims, setDims] = useState(() =>
+    measureBook(
+      typeof window !== "undefined" ? window.innerWidth : 360,
+      360
+    )
+  );
   const wrapRef = useRef(null);
+  const flippingRef = useRef(false);
+  const resizeTimer = useRef(null);
 
   const total = categories.length + 2;
+  const isMobile = dims.mode === "mobile";
 
   useEffect(() => {
-    const resize = () => {
+    const applySize = () => {
+      if (flippingRef.current) return;
       const vw = window.innerWidth;
-      const cw = wrapRef.current?.offsetWidth || vw;
-      let w, mode;
-      if (vw < 768) {
-        mode = "mobile";
-        w = Math.max(260, Math.min(cw, 420));
-      } else {
-        mode = "desktop";
-        w = Math.max(300, Math.min(440, Math.floor((cw - 24) / 2)));
-      }
-      const h = Math.round(w * 1.36);
+      const next = measureBook(vw, wrapRef.current?.offsetWidth || vw);
       setDims((prev) =>
-        prev.w === w && prev.mode === mode ? prev : { w, h, mode }
+        prev.w === next.w && prev.h === next.h && prev.mode === next.mode
+          ? prev
+          : next
       );
     };
-    resize();
-    window.addEventListener("resize", resize);
-    window.addEventListener("orientationchange", resize);
+
+    const scheduleResize = () => {
+      clearTimeout(resizeTimer.current);
+      resizeTimer.current = setTimeout(applySize, 200);
+    };
+
+    applySize();
+    window.addEventListener("orientationchange", applySize);
+    window.addEventListener("resize", scheduleResize);
     return () => {
-      window.removeEventListener("resize", resize);
-      window.removeEventListener("orientationchange", resize);
+      clearTimeout(resizeTimer.current);
+      window.removeEventListener("orientationchange", applySize);
+      window.removeEventListener("resize", scheduleResize);
     };
   }, []);
 
   useEffect(() => {
     setPage(0);
-  }, [dims.w, dims.mode]);
+  }, [dims.mode]);
 
   const flipPrev = () => book.current?.pageFlip()?.flipPrev();
   const flipNext = () => book.current?.pageFlip()?.flipNext();
@@ -107,21 +124,36 @@ export default function BookMenu({ categories }) {
           ref={wrapRef}
           className="mx-auto mt-6 flex w-full max-w-4xl flex-col items-center sm:mt-8"
         >
-          <div className="book-shadow w-full max-w-full px-1">
-            <div className="mx-auto w-max max-w-full">
+          <div
+            className="book-shadow w-full max-w-full px-1"
+            style={{ touchAction: "manipulation" }}
+          >
+            <div
+              className="book-stage mx-auto"
+              style={{ width: dims.w, height: dims.h }}
+            >
               <HTMLFlipBook
-                key={`${dims.mode}-${dims.w}`}
+                key={dims.mode}
                 ref={book}
                 width={dims.w}
                 height={dims.h}
+                minWidth={dims.w}
+                maxWidth={dims.w}
+                minHeight={dims.h}
+                maxHeight={dims.h}
                 size="fixed"
-                usePortrait={true}
+                usePortrait={isMobile}
                 showCover={true}
-                mobileScrollSupport={true}
-                maxShadowOpacity={0.4}
-                drawShadow={true}
-                flippingTime={700}
+                mobileScrollSupport={false}
+                maxShadowOpacity={isMobile ? 0.15 : 0.35}
+                drawShadow={!isMobile}
+                flippingTime={isMobile ? 420 : 650}
                 useMouseEvents={true}
+                swipeDistance={30}
+                showPageCorners={true}
+                onChangeState={(e) => {
+                  flippingRef.current = e.data === "flipping";
+                }}
                 onFlip={(e) => setPage(e.data)}
                 className="mx-auto"
               >
