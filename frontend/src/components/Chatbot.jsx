@@ -112,7 +112,38 @@ export default function Chatbot() {
         { id: nextId(), role: "bot", text: GREETING, typing: true },
       ]);
     }
-    if (open) setTimeout(() => inputRef.current?.focus(), 300);
+    // Auto-focus on desktop only — on mobile it opens the keyboard and breaks layout.
+    if (open && window.matchMedia("(min-width: 768px)").matches) {
+      setTimeout(() => inputRef.current?.focus(), 300);
+    }
+  }, [open]);
+
+  // Lock scroll + shrink panel when mobile keyboard opens (visual viewport).
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const vv = window.visualViewport;
+    const syncViewport = () => {
+      if (!vv) return;
+      const gap = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+      document.documentElement.style.setProperty(
+        "--chat-vv-offset",
+        `${gap}px`
+      );
+    };
+
+    syncViewport();
+    vv?.addEventListener("resize", syncViewport);
+    vv?.addEventListener("scroll", syncViewport);
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.documentElement.style.removeProperty("--chat-vv-offset");
+      vv?.removeEventListener("resize", syncViewport);
+      vv?.removeEventListener("scroll", syncViewport);
+    };
   }, [open]);
 
   const pushUser = (text) =>
@@ -180,11 +211,12 @@ export default function Chatbot() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 30, scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 260, damping: 24 }}
-            className="fixed bottom-4 right-4 z-50 flex h-[min(560px,80vh)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-3xl border border-border bg-cream shadow-warm"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            style={{ bottom: "max(1rem, var(--chat-vv-offset, 0px))" }}
+            className="fixed left-2 right-2 z-50 flex h-[calc(100dvh-1rem-var(--chat-vv-offset,0px))] flex-col overflow-hidden rounded-3xl border border-border bg-cream shadow-warm sm:left-auto sm:right-4 sm:h-[min(560px,calc(100dvh-2rem))] sm:w-[min(380px,calc(100vw-2rem))] md:bottom-4"
           >
             {/* Header */}
             <div className="flex items-center gap-3 bg-gradient-to-r from-chili to-saffron px-4 py-3 text-white">
@@ -208,7 +240,7 @@ export default function Chatbot() {
             {/* Messages */}
             <div
               ref={scrollRef}
-              className="flex-1 space-y-3 overflow-y-auto bg-spice px-3 py-4"
+              className="min-h-0 flex-1 basis-0 space-y-3 overflow-y-auto overscroll-contain bg-spice px-3 py-4"
             >
               {messages.map((msg) =>
                 msg.role === "bot" ? (
@@ -275,14 +307,17 @@ export default function Chatbot() {
             </div>
 
             {/* Input */}
-            <div className="flex items-center gap-2 border-t border-border bg-cream p-3">
+            <div className="shrink-0 flex items-center gap-2 border-t border-border bg-cream p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
               <input
                 ref={inputRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && send()}
+                onFocus={scrollToBottom}
                 placeholder="Type your question…"
-                className="h-11 flex-1 rounded-full border-2 border-input bg-white px-4 text-sm font-medium outline-none focus:border-saffron"
+                enterKeyHint="send"
+                autoComplete="off"
+                className="h-11 min-h-[44px] flex-1 rounded-full border-2 border-input bg-white px-4 text-base font-medium outline-none focus:border-saffron"
               />
               <button
                 onClick={() => send()}

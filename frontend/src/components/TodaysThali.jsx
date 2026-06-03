@@ -1,10 +1,8 @@
 import { motion } from "framer-motion";
 import { Utensils } from "lucide-react";
 import { getTodaysThali, waLink } from "@/lib/utils";
-import { useLang } from "@/lib/LanguageContext";
 
 export default function TodaysThali() {
-  const { t } = useLang();
   const thali = getTodaysThali();
 
   return (
@@ -25,7 +23,7 @@ export default function TodaysThali() {
               </div>
               <div>
                 <p className="font-script text-2xl text-saffron">
-                  {t.todaysThali} · {thali.day}
+                  Today&apos;s Thali · {thali.day}
                 </p>
                 <p className="font-display text-xl font-black sm:text-2xl">
                   {thali.dish}
