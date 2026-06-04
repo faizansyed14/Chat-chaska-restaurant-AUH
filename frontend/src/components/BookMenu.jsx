@@ -1,6 +1,5 @@
 import { forwardRef, useRef, useState, useEffect } from "react";
 import HTMLFlipBook from "react-pageflip";
-import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Utensils, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Navbar";
@@ -101,43 +100,55 @@ function CategoryContent({ cat, highlight }) {
 // ─── Helper ───────────────────────────────────────────────────────────────────
 function measureDesktop(containerWidth) {
   const w = Math.max(300, Math.min(440, Math.floor((containerWidth - 24) / 2)));
-  return { w, h: Math.round(w * 1.36) };
+  return { w, h: Math.round(w * 1.2) };
 }
 
 // ─── MOBILE BOOK ──────────────────────────────────────────────────────────────
-// Uses framer-motion AnimatePresence — NO react-pageflip on mobile.
-// react-pageflip's usePortrait mode applies an internal CSS scale() during
-// the flip animation which causes the zoom-in/zoom-out bug. This replaces it
-// with a clean 3D slide that has zero zoom issues.
-const slideVariants = {
-  enter: (dir) => ({
-    x: dir > 0 ? "100%" : "-100%",
-    opacity: 0,
-    rotateY: dir > 0 ? 15 : -15,
-  }),
-  center: { x: 0, opacity: 1, rotateY: 0 },
-  exit: (dir) => ({
-    x: dir > 0 ? "-100%" : "100%",
-    opacity: 0,
-    rotateY: dir > 0 ? -15 : 15,
-  }),
-};
+// react-pageflip in single-page portrait mode → real paper-turning animation.
+// Fixed width/height (no maxWidth shrink) + mobileScrollSupport off + no remount
+// during a flip keeps it from the zoom/shudder jank.
+// Sizes from the ACTUAL available width (not window) so the book never
+// overflows its slot — that overflow was what pushed it off-centre.
+function measureMobile(availWidth) {
+  const w = Math.max(240, Math.min(availWidth - 8, 380));
+  return { w, h: Math.round(w * 1.3) };
+}
 
 function MobileBook({ categories, query }) {
+  const book = useRef(null);
+  const wrapRef = useRef(null);
   const total = categories.length + 2; // cover + categories + back cover
   const [page, setPage] = useState(0);
-  const [dir, setDir] = useState(1);
+  const [dims, setDims] = useState(() =>
+    measureMobile(
+      typeof window !== "undefined" ? window.innerWidth - 48 : 320
+    )
+  );
+  const flippingRef = useRef(false);
+  const resizeTimer = useRef(null);
 
-  const goNext = () => {
-    if (page >= total - 1) return;
-    setDir(1);
-    setPage((p) => p + 1);
-  };
-  const goPrev = () => {
-    if (page <= 0) return;
-    setDir(-1);
-    setPage((p) => p - 1);
-  };
+  useEffect(() => {
+    const measure = () => {
+      if (flippingRef.current) return;
+      const avail = wrapRef.current?.offsetWidth || window.innerWidth - 48;
+      const next = measureMobile(avail);
+      setDims((prev) =>
+        prev.w === next.w && prev.h === next.h ? prev : next
+      );
+    };
+    const handler = () => {
+      clearTimeout(resizeTimer.current);
+      resizeTimer.current = setTimeout(measure, 150);
+    };
+    measure();
+    window.addEventListener("orientationchange", measure);
+    window.addEventListener("resize", handler);
+    return () => {
+      clearTimeout(resizeTimer.current);
+      window.removeEventListener("orientationchange", measure);
+      window.removeEventListener("resize", handler);
+    };
+  }, []);
 
   // Jump to first category that matches the search query
   useEffect(() => {
@@ -146,63 +157,50 @@ function MobileBook({ categories, query }) {
     const idx = categories.findIndex((cat) =>
       cat.items.some((it) => it.name.toLowerCase().includes(lq))
     );
-    if (idx !== -1) {
-      setDir(1);
-      setPage(idx + 1); // +1 because page 0 is the cover
-    }
+    if (idx !== -1) book.current?.pageFlip()?.flip(idx + 1);
   }, [query, categories]);
 
-  const renderContent = (pageIdx) => {
-    if (pageIdx === 0) return <CoverContent />;
-    if (pageIdx === total - 1) return <BackCoverContent />;
-    return <CategoryContent cat={categories[pageIdx - 1]} highlight={query} />;
-  };
-
-  const isSpecialPage = page === 0 || page === total - 1;
-
   return (
-    <div className="mx-auto w-full max-w-[360px] px-2">
-      {/* Book card */}
+    <div ref={wrapRef} className="w-full">
       <div
-        className="mobile-book-shadow relative overflow-hidden rounded-2xl"
-        style={{
-          height: Math.round(
-            (Math.min(
-              typeof window !== "undefined" ? window.innerWidth - 32 : 328,
-              360
-            )) * 1.42
-          ),
-        }}
+        className="book-shadow"
+        style={{ width: dims.w, margin: "0 auto", touchAction: "manipulation" }}
       >
-        <AnimatePresence initial={false} custom={dir} mode="popLayout">
-          <motion.div
-            key={page}
-            custom={dir}
-            variants={slideVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-            style={{ perspective: 1200 }}
-            className={`absolute inset-0 p-5 ${isSpecialPage ? "" : "menu-page"}`}
+        <div className="book-stage" style={{ width: dims.w, height: dims.h }}>
+          <HTMLFlipBook
+            key={`mobile-${dims.w}`}
+            ref={book}
+            width={dims.w}
+            height={dims.h}
+            minWidth={dims.w}
+            maxWidth={dims.w}
+            minHeight={dims.h}
+            maxHeight={dims.h}
+            size="fixed"
+            usePortrait={true}
+            showCover={false}
+            mobileScrollSupport={false}
+            maxShadowOpacity={0.25}
+            drawShadow={true}
+            flippingTime={500}
+            useMouseEvents={true}
+            swipeDistance={30}
+            showPageCorners={true}
+            onChangeState={(e) => {
+              flippingRef.current = e.data === "flipping";
+            }}
+            onFlip={(e) => setPage(e.data)}
+            className="mx-auto"
           >
-            {renderContent(page)}
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Invisible tap zones — tap left third to go back, right third to go forward */}
-        <button
-          onClick={goPrev}
-          disabled={page === 0}
-          aria-label="Previous page"
-          className="absolute inset-y-0 left-0 w-1/3 cursor-pointer opacity-0"
-        />
-        <button
-          onClick={goNext}
-          disabled={page >= total - 1}
-          aria-label="Next page"
-          className="absolute inset-y-0 right-0 w-1/3 cursor-pointer opacity-0"
-        />
+            <Page side="right"><CoverContent /></Page>
+            {categories.map((cat, i) => (
+              <Page key={cat.id} side={i % 2 === 0 ? "left" : "right"}>
+                <CategoryContent cat={cat} highlight={query} />
+              </Page>
+            ))}
+            <Page side="left"><BackCoverContent /></Page>
+          </HTMLFlipBook>
+        </div>
       </div>
 
       {/* Arrow controls */}
@@ -210,7 +208,7 @@ function MobileBook({ categories, query }) {
         <Button
           variant="white"
           size="icon"
-          onClick={goPrev}
+          onClick={() => book.current?.pageFlip()?.flipPrev()}
           disabled={page === 0}
           aria-label="Previous page"
         >
@@ -222,7 +220,7 @@ function MobileBook({ categories, query }) {
         <Button
           variant="white"
           size="icon"
-          onClick={goNext}
+          onClick={() => book.current?.pageFlip()?.flipNext()}
           disabled={page >= total - 1}
           aria-label="Next page"
         >
@@ -279,10 +277,17 @@ function DesktopBook({ categories, query }) {
       ref={wrapRef}
       className="mx-auto mt-6 flex w-full max-w-4xl flex-col items-center sm:mt-8"
     >
-      <div className="book-shadow w-full max-w-full px-1">
+      <div className="book-shadow flex w-full max-w-full justify-center px-1">
         <div
           className="mx-auto"
-          style={{ width: dims.w * 2, maxWidth: "100%" }}
+          style={{
+            width: dims.w * 2,
+            maxWidth: "100%",
+            transform: `translateX(${
+              page === 0 ? -dims.w / 2 : page === total - 1 ? dims.w / 2 : 0
+            }px)`,
+            transition: "transform 0.45s ease",
+          }}
         >
           <HTMLFlipBook
             key={`desktop-${dims.w}`}
