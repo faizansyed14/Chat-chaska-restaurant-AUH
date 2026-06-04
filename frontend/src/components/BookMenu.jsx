@@ -386,10 +386,13 @@ export default function BookMenu({ categories }) {
           <div className="relative">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-masala/40" />
             <input
+              type="search"
               value={query}
               onChange={(e) => handleSearch(e.target.value)}
               placeholder="Search menu… e.g. paneer, dosa"
-              className="w-full rounded-full border-2 border-input bg-white py-2.5 pl-10 pr-10 text-sm font-medium shadow-soft outline-none focus:border-saffron"
+              enterKeyHint="search"
+              autoComplete="off"
+              className="w-full min-h-[44px] rounded-full border-2 border-input bg-white py-2.5 pl-10 pr-10 text-base font-medium shadow-soft outline-none focus:border-saffron"
             />
             {query && (
               <button
