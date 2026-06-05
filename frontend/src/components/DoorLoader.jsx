@@ -57,7 +57,7 @@ export default function DoorLoader() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 sm:gap-4">
           <Logo light className="!h-14 !w-auto sm:!h-20 md:!h-24" />
           <p className="font-display text-4xl font-black tracking-tight text-saffron sm:text-5xl md:text-6xl">
-            chaat
+            CHAAT
           </p>
         </div>
       </motion.div>
@@ -78,7 +78,7 @@ export default function DoorLoader() {
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 sm:gap-4">
           <Logo light className="!h-14 !w-auto sm:!h-20 md:!h-24" />
           <p className="font-display text-4xl font-black tracking-tight text-saffron sm:text-5xl md:text-6xl">
-            chaska
+            CHASKA
           </p>
         </div>
       </motion.div>

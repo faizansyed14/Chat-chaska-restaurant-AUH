@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, Mail, MessageCircle, Instagram } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,10 @@ import { RESTAURANT, waLink } from "@/lib/utils";
 import OpenStatus from "@/components/OpenStatus";
 
 export default function Contact() {
+  const [activeMap, setActiveMap] = useState(
+    RESTAURANT.branches.find((b) => !b.comingSoon)?.mapsEmbed
+  );
+
   return (
     <section id="contact" className="bg-spice grain relative py-16 sm:py-24">
       <div className="container">
@@ -51,6 +56,9 @@ export default function Contact() {
             {RESTAURANT.branches.map((b) => (
               <motion.div
                 key={b.name}
+                onClick={() => {
+                  if (b.mapsEmbed) setActiveMap(b.mapsEmbed);
+                }}
                 initial={b.comingSoon ? { scale: 0.98, opacity: 0.8 } : {}}
                 animate={
                   b.comingSoon
@@ -61,13 +69,24 @@ export default function Contact() {
                       }
                     : {}
                 }
-                className={`rounded-3xl border border-border bg-card p-6 shadow-soft ${
-                  b.comingSoon ? "border-saffron/30 bg-saffron/5" : ""
+                className={`cursor-pointer rounded-3xl border-2 p-6 transition-all shadow-soft ${
+                  activeMap === b.mapsEmbed 
+                    ? "border-chili bg-white ring-4 ring-chili/5" 
+                    : "border-border bg-card hover:border-chili/30"
+                } ${
+                  b.comingSoon ? "border-saffron/30 bg-saffron/5 cursor-default" : ""
                 }`}
               >
-                <h3 className="font-display text-xl font-bold text-masala">
-                  {b.name}
-                </h3>
+                <div className="flex items-start justify-between">
+                  <h3 className="font-display text-xl font-bold text-masala">
+                    {b.name}
+                  </h3>
+                  {activeMap === b.mapsEmbed && (
+                    <span className="rounded-full bg-chili px-2 py-0.5 text-[10px] font-bold uppercase text-white">
+                      Showing Map
+                    </span>
+                  )}
+                </div>
                 <p className="mt-2 flex items-start gap-2 text-sm text-masala/70">
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-chili" />
                   {b.address}
@@ -121,16 +140,15 @@ export default function Contact() {
 
           {/* Map column */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="overflow-hidden rounded-3xl border-4 border-white shadow-warm"
+            key={activeMap}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="overflow-hidden rounded-3xl border-4 border-white shadow-warm h-full"
           >
             <iframe
               title="Chaat Chaska location"
-              src={RESTAURANT.mapsEmbed}
-              className="h-full min-h-[420px] w-full"
+              src={activeMap}
+              className="h-full min-h-[500px] w-full"
               style={{ border: 0 }}
               allowFullScreen
               loading="lazy"

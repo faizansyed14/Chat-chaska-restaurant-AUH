@@ -87,9 +87,6 @@ export default function Gallery() {
                 img={g.img}
                 className={`w-full ${i % 5 === 0 ? "h-full min-h-[12rem]" : "h-32 sm:h-44"}`}
               />
-              <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/55 via-transparent to-transparent opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
-                <span className="p-3 text-sm font-bold text-white">{g.name}</span>
-              </div>
             </motion.button>
           ))}
         </div>
@@ -147,13 +144,8 @@ export default function Gallery() {
                   name={GALLERY[active].name}
                   emoji={GALLERY[active].emoji}
                   img={GALLERY[active].img}
-                  className="h-[min(52vh,420px)] w-full sm:h-[min(60vh,480px)]"
+                  className="h-full w-full object-contain"
                 />
-                <div className="p-4 text-center">
-                  <p className="font-display text-lg font-black text-masala sm:text-xl">
-                    {GALLERY[active].name}
-                  </p>
-                </div>
               </motion.div>
 
               <button

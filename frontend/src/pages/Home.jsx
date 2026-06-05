@@ -26,7 +26,6 @@ export default function Home() {
     <div className="min-h-screen bg-cream">
       <DoorLoader />
       <ScrollProgress />
-      <PromoBanner />
       <Navbar />
       <main>
         <Hero />

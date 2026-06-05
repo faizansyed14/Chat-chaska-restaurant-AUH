@@ -20,7 +20,7 @@ export const RESTAURANT = {
   reviewUrl:
     "https://search.google.com/local/writereview?placeid=ChIJV8LARsxnXj4Rm3ezEiSop3o",
   mapsEmbed:
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.3999682250096!2d54.36560910000001!3d24.4805048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67cc46c0c257%3A0x17a7a82412b3771b!2sCHAAT%20CHASKA%20RESTAURANT!5e1!3m2!1sen!2sin!4v1780343249847!5m2!1sen!2sin",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4312.557785823392!2d54.5318322!3d24.325094699999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e390045d9f2ed%3A0xf67dd35688177388!2sCHAAT%20CHASKA!5e1!3m2!1sen!2sae!4v1780664533396!5m2!1sen!2sae",
   branches: [
     {
       name: "Mushrif Mall - Coming Soon!",
@@ -32,6 +32,7 @@ export const RESTAURANT = {
       address:
         "Front of Vegetable & Fish Market, Behind Madina Zayed Mall, Abu Dhabi",
       mapUrl: "https://maps.app.goo.gl/hFCJ1AdXGRmbPzLRA?g_st=iw",
+      mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.3999682250096!2d54.36560910000001!3d24.4805048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67cc46c0c257%3A0x17a7a82412b3771b!2sCHAAT%20CHASKA%20RESTAURANT!5e1!3m2!1sen!2sae!4v1780665089135!5m2!1sen!2sae",
       phones: ["02 650 0101", "050 187 8936"],
     },
     {
@@ -39,6 +40,7 @@ export const RESTAURANT = {
       address:
         "Behind 24/7 Madina Hyper Market, MBZ 11, Musaffah, Abu Dhabi",
       mapUrl: "https://maps.app.goo.gl/NPCC91QzbcQBQFes5?g_st=iw",
+      mapsEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4312.557785823392!2d54.5318322!3d24.325094699999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e390045d9f2ed%3A0xf67dd35688177388!2sCHAAT%20CHASKA!5e1!3m2!1sen!2sae!4v1780664533396!5m2!1sen!2sae",
       phones: ["056 792 9709"],
     },
   ],

@@ -5,6 +5,7 @@ import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { waLink } from "@/lib/utils";
 import OpenStatus from "@/components/OpenStatus";
+import PromoBanner from "@/components/PromoBanner";
 
 const LINKS = [
   { label: "Home", href: "#home" },
@@ -106,6 +107,8 @@ export default function Navbar() {
           </div>
         </div>
       )}
+      
+      <PromoBanner />
     </header>
   );
 }

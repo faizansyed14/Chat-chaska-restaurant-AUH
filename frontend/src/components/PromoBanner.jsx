@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { motion } from "framer-motion";
 
-// Reads a single row from the `settings` table (key = 'promo'):
-//   { enabled: bool, text: string }
-// Toggle it from the admin panel. If Supabase isn't set up, the banner
-// simply doesn't show. Dismissal is remembered per text via sessionStorage.
 export default function PromoBanner() {
   const [promo, setPromo] = useState(null);
   const [dismissed, setDismissed] = useState(false);
@@ -25,33 +22,45 @@ export default function PromoBanner() {
           const seen = sessionStorage.getItem("promo-dismissed");
           if (seen === data.value.text) setDismissed(true);
         }
-      } catch {
-        /* no promo configured - ignore */
-      }
+      } catch { /* ignored */ }
     })();
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, []);
 
   if (!promo || dismissed) return null;
 
   return (
-    <div className="relative z-[55] bg-gradient-to-r from-chili to-saffron text-center text-sm font-bold text-white">
-      <div className="container flex items-center justify-center gap-2 py-2">
-        <span className="animate-pulse">🎉</span>
-        <span className="truncate">{promo.text}</span>
-        <button
-          onClick={() => {
-            sessionStorage.setItem("promo-dismissed", promo.text);
-            setDismissed(true);
+    <div className="relative z-40 bg-gradient-to-r from-chili to-saffron overflow-hidden border-b border-white/10 py-1.5 shadow-sm">
+      <div className="flex whitespace-nowrap">
+        <motion.div
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{
+            repeat: Infinity,
+            duration: 25,
+            ease: "linear",
           }}
-          aria-label="Dismiss"
-          className="absolute right-3 grid h-6 w-6 place-items-center rounded-full bg-white/20 hover:bg-white/30"
+          className="flex gap-16 px-4"
         >
-          <X className="h-4 w-4" />
-        </button>
+          {/* Repeat the text multiple times to ensure continuous flow */}
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="flex items-center gap-3 text-sm font-bold text-white uppercase tracking-wider">
+              <span>🎉</span>
+              <span>{promo.text}</span>
+              <span className="opacity-40">✦</span>
+            </div>
+          ))}
+        </motion.div>
       </div>
+      
+      <button
+        onClick={() => {
+          sessionStorage.setItem("promo-dismissed", promo.text);
+          setDismissed(true);
+        }}
+        className="absolute right-0 top-0 bottom-0 z-10 bg-gradient-to-l from-saffron to-transparent px-4 py-1 text-white hover:text-white/80"
+      >
+        <X className="h-4 w-4" />
+      </button>
     </div>
   );
 }
