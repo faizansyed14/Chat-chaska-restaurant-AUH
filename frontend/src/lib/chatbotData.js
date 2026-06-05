@@ -54,7 +54,7 @@ export const INTENTS = [
       "shabia", "map", "directions", "how to reach", "near",
     ],
     answer:
-      "We have two branches in Abu Dhabi 📍\n\n1️⃣ Madinat Zayed - Front of the Vegetable & Fish Market, behind Madina Zayed Mall.\n\n2️⃣ Shabia 11, Musaffah - Behind 24/7 Madina Hyper Market, MBZ 11.\n\nYou'll find a live map on our website's 'Visit' section!",
+      "We have two branches in Abu Dhabi 📍\n\n1️⃣ Madinat Zayed - Front of the Vegetable & Fish Market, behind Madina Zayed Mall.\n\n2️⃣ Shabia 11, Musaffah - Behind 24/7 Madina Hyper Market, MBZ 11.\n\n✨ Coming Soon: Mushrif Mall branch!\n\nYou'll find a live map on our website's 'Visit' section!",
   },
   {
     id: "hours",
@@ -64,7 +64,7 @@ export const INTENTS = [
       "working hours", "are you open", "till what time", "late",
     ],
     answer:
-      "We're open every day, 9:00 AM – 1:00 AM 🕒. Come by for breakfast, lunch, an evening chaat craving, or a late-night snack!",
+      "We're open every day, 8:00 AM – 12:00 AM 🕒. Come by for breakfast, lunch, an evening chaat craving, or a late-night snack!",
   },
   {
     id: "contact",
@@ -72,7 +72,7 @@ export const INTENTS = [
       "contact", "phone", "phone number", "number", "call", "mobile",
       "reach", "telephone", "talk", "speak", "email", "mail", "e-mail",
     ],
-    answer: `You can reach us 📞\n\n• Madinat Zayed: 02 650 0101 / 050 187 8936\n• Musaffah: 056 792 9709\n• WhatsApp: +971 50 751 3245\n• Email: ${RESTAURANT.email}`,
+    answer: `You can reach us 📞\n\n• Madinat Zayed: 02 650 0101 / 050 187 8936\n• Musaffah: 056 792 9709\n• WhatsApp: +971 56 217 0524\n• Email: ${RESTAURANT.email}`,
   },
   {
     id: "whatsapp",
@@ -82,7 +82,7 @@ export const INTENTS = [
       "message you", "chat order",
     ],
     answer:
-      "The easiest way to order is on WhatsApp 🟢 - just tap the WhatsApp button (bottom-left) or message us at +971 50 751 3245. Tell us your items and branch, and we'll take it from there!",
+      "The easiest way to order is on WhatsApp 🟢 - just tap the WhatsApp button (bottom-left) or message us at +971 56 217 0524. Tell us your items and branch, and we'll take it from there!",
     action: { label: "Open WhatsApp", href: waLink() },
   },
   {
@@ -94,7 +94,7 @@ export const INTENTS = [
       "to go",
     ],
     answer:
-      "Yes! 🛵 You can order for takeaway or delivery - just message us on WhatsApp (+971 50 751 3245) with your items and address, and we'll arrange it. Dine-in is always welcome too!",
+      "Yes! 🛵 You can order for takeaway or delivery - just message us on WhatsApp (+971 56 217 0524) with your items and address, and we'll arrange it. Dine-in is always welcome too!",
     action: { label: "Order on WhatsApp", href: waLink() },
   },
   {
@@ -254,7 +254,7 @@ export const INTENTS = [
       "function", "large order", "wedding", "office order",
     ],
     answer:
-      "Yes, we do catering & bulk orders for events 🎉! WhatsApp us at +971 50 751 3245 with your headcount and menu, and we'll prepare a quote for you.",
+      "Yes, we do catering & bulk orders for events 🎉! WhatsApp us at +971 56 217 0524 with your headcount and menu, and we'll prepare a quote for you.",
     action: { label: "Enquire on WhatsApp", href: waLink("Hi Chaat Chaska! I'd like to ask about catering / bulk orders.") },
   },
   {

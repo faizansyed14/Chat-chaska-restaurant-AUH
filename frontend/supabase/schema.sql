@@ -6,12 +6,14 @@
 -- Categories (e.g. "Chaat Ke Chaske", "Dose Ki Dukan")
 create table if not exists public.categories (
   id          uuid primary key default gen_random_uuid(),
-  slug        text unique not null,
+  slug        text not null,
   title       text not null,
   subtitle    text,
   accent      text default 'saffron',          -- chili | saffron | leaf | turmeric
   sort_order  int  default 0,
-  created_at  timestamptz default now()
+  branch      text default 'mussafah',         -- mussafah | madinat-zayed
+  created_at  timestamptz default now(),
+  unique (slug, branch)
 );
 
 -- Menu items belonging to a category
@@ -22,6 +24,7 @@ create table if not exists public.menu_items (
   price         numeric(10,2) not null default 0,
   is_available  boolean default true,
   sort_order    int default 0,
+  branch        text default 'mussafah',         -- mussafah | madinat-zayed
   created_at    timestamptz default now()
 );
 

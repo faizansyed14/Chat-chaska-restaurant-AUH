@@ -42,16 +42,28 @@ export default function Contact() {
                     Order now
                   </p>
                   <p className="font-display text-lg font-black leading-tight sm:text-xl">
-                    WhatsApp +971&nbsp;50&nbsp;751&nbsp;3245
+                    WhatsApp +971&nbsp;56&nbsp;217&nbsp;0524
                   </p>
                 </div>
               </div>
             </a>
 
             {RESTAURANT.branches.map((b) => (
-              <div
+              <motion.div
                 key={b.name}
-                className="rounded-3xl border border-border bg-card p-6 shadow-soft"
+                initial={b.comingSoon ? { scale: 0.98, opacity: 0.8 } : {}}
+                animate={
+                  b.comingSoon
+                    ? {
+                        scale: [1, 1.02, 1],
+                        opacity: [0.8, 1, 0.8],
+                        transition: { duration: 2, repeat: Infinity },
+                      }
+                    : {}
+                }
+                className={`rounded-3xl border border-border bg-card p-6 shadow-soft ${
+                  b.comingSoon ? "border-saffron/30 bg-saffron/5" : ""
+                }`}
               >
                 <h3 className="font-display text-xl font-bold text-masala">
                   {b.name}
@@ -60,18 +72,25 @@ export default function Contact() {
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-chili" />
                   {b.address}
                 </p>
-                <p className="mt-2 flex items-center gap-2 text-sm font-bold text-masala">
-                  <Phone className="h-4 w-4 text-chili" />
-                  {b.phones.join("  ·  ")}
-                </p>
-              </div>
+                {!b.comingSoon && (
+                  <p className="mt-2 flex items-center gap-2 text-sm font-bold text-masala">
+                    <Phone className="h-4 w-4 text-chili" />
+                    {b.phones.join("  ·  ")}
+                  </p>
+                )}
+                {b.comingSoon && (
+                  <p className="mt-2 text-xs font-bold uppercase tracking-widest text-saffron">
+                    Expanding soon to serve you better! ✦
+                  </p>
+                )}
+              </motion.div>
             ))}
 
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-3xl border border-border bg-card p-5 shadow-soft">
                 <Clock className="h-5 w-5 text-chili" />
                 <p className="mt-2 text-sm font-bold text-masala">Open daily</p>
-                <p className="text-sm text-masala/65">9:00 AM – 1:00 AM</p>
+                <p className="text-sm text-masala/65">8:00 AM – 12:00 AM</p>
                 <OpenStatus className="mt-2" />
               </div>
               <a
@@ -82,6 +101,9 @@ export default function Contact() {
                 <p className="mt-2 text-sm font-bold text-masala">Email us</p>
                 <p className="truncate text-sm text-masala/65">
                   {RESTAURANT.email}
+                </p>
+                <p className="truncate text-[11px] text-masala/40">
+                  {RESTAURANT.secondaryEmail}
                 </p>
               </a>
             </div>

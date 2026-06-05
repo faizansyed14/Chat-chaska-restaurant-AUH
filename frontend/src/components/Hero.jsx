@@ -35,12 +35,15 @@ export default function Hero() {
         className="container relative z-10 grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]"
       >
         <div className="text-center lg:text-left">
-          <motion.div variants={item} className="flex justify-center lg:justify-start">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-chili shadow-soft sm:px-4 sm:py-2 sm:text-xs">
+          <motion.div variants={item} className="flex flex-col items-center justify-center gap-3 lg:items-start lg:justify-start">
+            <span className="inline-flex animate-pulse items-center gap-2 rounded-full bg-saffron/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-chili shadow-sm sm:px-4 sm:py-2 sm:text-xs">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-chili opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-chili" />
+                <span className="absolute inline-flex h-2 w-2 animate-ping rounded-full bg-saffron opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-saffron" />
               </span>
+              New Branch: Mushrif Mall - Coming Soon!
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-masala/60 shadow-soft sm:px-4 sm:py-2 sm:text-xs">
               Madinat Zayed · Musaffah · Abu Dhabi
             </span>
           </motion.div>

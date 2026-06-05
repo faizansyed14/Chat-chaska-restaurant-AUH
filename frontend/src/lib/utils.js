@@ -9,18 +9,24 @@ export function cn(...inputs) {
 export const RESTAURANT = {
   name: "Chaat Chaska",
   tagline: "Authentic Indian Street Food",
-  whatsapp: "971507513245", // +971 50 751 3245
+  whatsapp: "971562170524", // Updated WhatsApp: 056 217 0524
   phones: ["+971 2 650 0101", "+971 50 187 8936"],
   email: "info@chaatchaskauae.com",
+  secondaryEmail: "Chaatchaska.restaurant@gmail.com",
   instagram: "chaatchaksa",
-  // Open 9:00 AM – 1:00 AM (next day) every day.
-  openHour: 9,
-  closeHour: 25, // 1 AM = 25 in a 24h+ scale
+  // Open 8:00 AM – 12:00 AM every day.
+  openHour: 8,
+  closeHour: 24, // 12 AM
   reviewUrl:
     "https://search.google.com/local/writereview?placeid=ChIJV8LARsxnXj4Rm3ezEiSop3o",
   mapsEmbed:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2983.3999682250096!2d54.36560910000001!3d24.4805048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e67cc46c0c257%3A0x17a7a82412b3771b!2sCHAAT%20CHASKA%20RESTAURANT!5e1!3m2!1sen!2sin!4v1780343249847!5m2!1sen!2sin",
   branches: [
+    {
+      name: "Mushrif Mall - Coming Soon!",
+      address: "Mushrif Mall, Abu Dhabi",
+      comingSoon: true,
+    },
     {
       name: "Madina Zayed - Abu Dhabi",
       address:
@@ -46,7 +52,7 @@ export function waLink(message) {
 }
 
 // ------------------------------------------------------------
-//  Live open / closed status (9 AM – 1 AM daily)
+//  Live open / closed status (8 AM – 12 AM daily)
 // ------------------------------------------------------------
 function fmtHour(h24) {
   const h = ((h24 % 24) + 24) % 24;

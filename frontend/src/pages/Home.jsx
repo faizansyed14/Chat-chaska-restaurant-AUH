@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
@@ -19,7 +19,8 @@ import { useMenu } from "@/lib/useMenu";
 const BookMenu = lazy(() => import("@/components/BookMenu"));
 
 export default function Home() {
-  const { categories } = useMenu();
+  const [branch, setBranch] = useState("mussafah");
+  const { categories, loading } = useMenu(branch);
 
   return (
     <div className="min-h-screen bg-cream">
@@ -50,7 +51,12 @@ export default function Home() {
               </div>
             }
           >
-            <BookMenu categories={categories} />
+            <BookMenu 
+              categories={categories} 
+              loading={loading} 
+              branch={branch} 
+              onBranchChange={setBranch} 
+            />
           </Suspense>
         </section>
         <Gallery />

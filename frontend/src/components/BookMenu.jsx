@@ -114,7 +114,7 @@ function measureMobile(availWidth) {
   return { w, h: Math.round(w * 1.3) };
 }
 
-function MobileBook({ categories, query }) {
+function MobileBook({ categories, query, branch }) {
   const book = useRef(null);
   const wrapRef = useRef(null);
   const total = categories.length + 2; // cover + categories + back cover
@@ -168,7 +168,7 @@ function MobileBook({ categories, query }) {
       >
         <div className="book-stage" style={{ width: dims.w, height: dims.h }}>
           <HTMLFlipBook
-            key={`mobile-${dims.w}`}
+            key={`mobile-${dims.w}-${branch}`}
             ref={book}
             width={dims.w}
             height={dims.h}
@@ -233,7 +233,7 @@ function MobileBook({ categories, query }) {
 
 // ─── DESKTOP BOOK ─────────────────────────────────────────────────────────────
 // react-pageflip works perfectly on desktop with usePortrait={false}.
-function DesktopBook({ categories, query }) {
+function DesktopBook({ categories, query, branch }) {
   const book = useRef(null);
   const wrapRef = useRef(null);
   const [page, setPage] = useState(0);
@@ -290,7 +290,7 @@ function DesktopBook({ categories, query }) {
           }}
         >
           <HTMLFlipBook
-            key={`desktop-${dims.w}`}
+            key={`desktop-${dims.w}-${branch}`}
             ref={book}
             width={dims.w}
             height={dims.h}
@@ -350,7 +350,12 @@ function DesktopBook({ categories, query }) {
 }
 
 // ─── Root export ──────────────────────────────────────────────────────────────
-export default function BookMenu({ categories }) {
+export default function BookMenu({
+  categories,
+  loading,
+  branch,
+  onBranchChange,
+}) {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
   );
@@ -381,6 +386,63 @@ export default function BookMenu({ categories }) {
   return (
     <div className="relative pb-4">
       <div className="container">
+        {/* Branch Selector Cards */}
+        <div className="mx-auto mb-10 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+          {[
+            {
+              id: "mussafah",
+              name: "Musaffah Branch",
+              tag: "Shabia 11",
+              desc: "Authentic street flavours",
+            },
+            {
+              id: "madinat-zayed",
+              name: "Madinat Zayed",
+              tag: "Main Outlet",
+              desc: "Our bustling heart in Abu Dhabi",
+            },
+          ].map((b) => (
+            <button
+              key={b.id}
+              onClick={() => onBranchChange(b.id)}
+              className={`group relative flex items-center gap-4 overflow-hidden rounded-[2rem] border-2 p-4 text-left transition-all sm:p-5 ${
+                branch === b.id
+                  ? "border-chili bg-white shadow-warm"
+                  : "border-masala/10 bg-white/40 hover:border-masala/20 hover:bg-white"
+              }`}
+            >
+              <div
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl transition-colors ${
+                  branch === b.id ? "bg-chili text-white" : "bg-masala/5 text-masala/40"
+                }`}
+              >
+                <Utensils className="h-6 w-6" />
+              </div>
+              <div className="flex-1 pr-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-chili/60">
+                    {b.tag}
+                  </span>
+                  {branch === b.id && (
+                    <span className="flex h-1.5 w-1.5 rounded-full bg-chili" />
+                  )}
+                </div>
+                <h4 className="font-display text-lg font-black text-masala">
+                  {b.name}
+                </h4>
+                <p className="text-xs text-masala/50">{b.desc}</p>
+              </div>
+              {branch === b.id && (
+                <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                   <div className="rounded-full bg-chili p-1 text-white">
+                      <ChevronRight className="h-4 w-4" />
+                   </div>
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
+
         {/* Search bar */}
         <div className="mx-auto mt-6 max-w-sm sm:mt-8">
           <div className="relative">
@@ -415,13 +477,18 @@ export default function BookMenu({ categories }) {
       </div>
 
       {/* Mobile or desktop book */}
-      <div className="container">
-        {isMobile ? (
+      <div className="container min-h-[400px]">
+        {loading ? (
+          <div className="flex h-64 flex-col items-center justify-center gap-3 text-masala/40">
+            <Utensils className="h-8 w-8 animate-bounce" />
+            <p className="animate-pulse text-sm font-bold">Refreshing menu…</p>
+          </div>
+        ) : isMobile ? (
           <div className="mt-6">
-            <MobileBook categories={categories} query={query} />
+            <MobileBook categories={categories} query={query} branch={branch} />
           </div>
         ) : (
-          <DesktopBook categories={categories} query={query} />
+          <DesktopBook categories={categories} query={query} branch={branch} />
         )}
       </div>
     </div>

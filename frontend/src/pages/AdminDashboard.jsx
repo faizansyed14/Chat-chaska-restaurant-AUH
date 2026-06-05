@@ -28,6 +28,7 @@ export default function AdminDashboard() {
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState("");
   const [promo, setPromo] = useState({ enabled: false, text: "" });
+  const [branch, setBranch] = useState("mussafah");
 
   const flash = (m) => {
     setToast(m);
@@ -47,20 +48,23 @@ export default function AdminDashboard() {
         loadAll();
       }
     });
-  }, []);
+  }, [branch]);
 
   async function loadAll() {
     const { data: c } = await supabase
       .from("categories")
       .select("*")
+      .eq("branch", branch)
       .order("sort_order");
     const { data: i } = await supabase
       .from("menu_items")
       .select("*")
+      .eq("branch", branch)
       .order("sort_order");
     setCats(c || []);
     setItems(i || []);
-    if (c?.length && !activeCat) setActiveCat(c[0].id);
+    if (c?.length) setActiveCat(c[0].id);
+    else setActiveCat(null);
     // Load promo setting
     try {
       const { data: ps } = await supabase
@@ -84,35 +88,49 @@ export default function AdminDashboard() {
   }
 
   async function seedDatabase() {
-    if (!confirm("Seed the database with the full Chaat Chaska menu? This adds all categories & items."))
+    const label = branch === "mussafah" ? "Mussafah" : "Madinat Zayed";
+    if (!confirm(`Seed the database with the full ${label} menu? This adds all categories & items for this branch.`))
       return;
     setBusy(true);
     try {
-      for (let ci = 0; ci < MENU.length; ci++) {
-        const cat = MENU[ci];
+      const { MENU: MENU_MUSSAFFAH } = await import("@/lib/menuData");
+      const { MENU_MADINAT_ZAYED } = await import("@/lib/menuMadinatZayed");
+      const sourceMenu = branch === "madinat-zayed" ? MENU_MADINAT_ZAYED : MENU_MUSSAFFAH;
+
+      for (let ci = 0; ci < sourceMenu.length; ci++) {
+        const cat = sourceMenu[ci];
+        
+        // Upsert categories based on (slug, branch)
         const { data: inserted, error } = await supabase
           .from("categories")
-          .insert({
+          .upsert({
             slug: cat.id,
             title: cat.title,
             subtitle: cat.subtitle,
             accent: cat.accent,
             sort_order: ci,
-          })
+            branch: branch
+          }, { onConflict: 'slug,branch' })
           .select()
           .single();
+          
         if (error) throw error;
+
+        // For items, we'll insert them. 
+        // To avoid exact duplicates if seeding twice, we could clear first, 
+        // but that's risky. Let's just insert as before.
         const rows = cat.items.map((it, idx) => ({
           category_id: inserted.id,
           name: it.name,
           price: it.price,
           sort_order: idx,
           is_available: true,
+          branch: branch
         }));
         const { error: e2 } = await supabase.from("menu_items").insert(rows);
         if (e2) throw e2;
       }
-      flash("Database seeded ✦");
+      flash(`Database seeded for ${label} ✦`);
       await loadAll();
     } catch (e) {
       flash("Error: " + e.message);
@@ -133,6 +151,7 @@ export default function AdminDashboard() {
       price: Number(newItem.price),
       sort_order: max + 1,
       is_available: true,
+      branch: branch
     });
     if (error) flash("Error: " + error.message);
     else {
@@ -227,6 +246,28 @@ export default function AdminDashboard() {
       )}
 
       <div className="container py-8">
+        {/* Branch Selection */}
+        <div className="mb-6 flex justify-center">
+          <div className="flex gap-1 rounded-2xl bg-masala/5 p-1">
+            {[
+              { id: "mussafah", label: "Musaffah Branch" },
+              { id: "madinat-zayed", label: "Madinat Zayed Branch" },
+            ].map((b) => (
+              <button
+                key={b.id}
+                onClick={() => setBranch(b.id)}
+                className={`rounded-xl px-6 py-2 text-sm font-bold transition-all ${
+                  branch === b.id
+                    ? "bg-white text-masala shadow-soft"
+                    : "text-masala/50 hover:bg-white/50"
+                }`}
+              >
+                {b.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Promo Banner editor */}
         {isSupabaseConfigured && (
           <Card className="mb-6 p-5">

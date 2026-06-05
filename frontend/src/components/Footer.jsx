@@ -23,20 +23,32 @@ export default function Footer() {
             <ul className="mt-4 space-y-4 text-sm">
               {RESTAURANT.branches.map((b) => (
                 <li key={b.name}>
-                  <a
-                    href={b.mapUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group block transition-colors hover:text-saffron"
-                  >
-                    <p className="font-bold text-cream group-hover:text-saffron">
-                      {b.name}
-                    </p>
-                    <p className="flex items-start gap-2 text-cream/60 group-hover:text-cream/80">
-                      <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                      {b.address}
-                    </p>
-                  </a>
+                  {b.comingSoon ? (
+                    <div className="block">
+                      <p className="font-bold text-saffron italic">
+                        {b.name}
+                      </p>
+                      <p className="flex items-start gap-2 text-cream/40">
+                        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                        {b.address}
+                      </p>
+                    </div>
+                  ) : (
+                    <a
+                      href={b.mapUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group block transition-colors hover:text-saffron"
+                    >
+                      <p className="font-bold text-cream group-hover:text-saffron">
+                        {b.name}
+                      </p>
+                      <p className="flex items-start gap-2 text-cream/60 group-hover:text-cream/80">
+                        <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                        {b.address}
+                      </p>
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
