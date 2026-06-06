@@ -18,7 +18,7 @@ export const RESTAURANT = {
   openHour: 8,
   closeHour: 24, // 12 AM
   reviewUrl:
-    "https://search.google.com/local/writereview?placeid=ChIJV8LARsxnXj4Rm3ezEiSop3o",
+    "https://www.google.com/search?sca_esv=18b9090e1ebdf78c&sxsrf=ANbL-n7UWE-fDsqZ-sjwPSyL9_5SvN9G0A:1780752022113&q=chaat+chaska&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOR7JNAvbGTMNgJp62OpJmTMfKc00Rw2jr-OyYnrJ1QvDHM9Jd-wHFRrXgx-fCZnWbLrsjQrX8Y4CLvzwF0JmgPI3fAhdiciSirDvQH7sihZbNYHFNw%3D%3D&sa=X&ved=2ahUKEwii89ed2vKUAxXAgP0HHdCLApgQrrQLegQIJxAA&biw=1280&bih=631&dpr=1.5",
   mapsEmbed:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4312.557785823392!2d54.5318322!3d24.325094699999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5e390045d9f2ed%3A0xf67dd35688177388!2sCHAAT%20CHASKA!5e1!3m2!1sen!2sae!4v1780664533396!5m2!1sen!2sae",
   branches: [
