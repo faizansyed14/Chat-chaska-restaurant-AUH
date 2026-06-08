@@ -13,7 +13,8 @@ export const RESTAURANT = {
   phones: ["+971 2 650 0101", "+971 50 187 8936"],
   email: "info@chaatchaskauae.com",
   secondaryEmail: "Chaatchaska.restaurant@gmail.com",
-  instagram: "chaatchaksa",
+  instagram: "https://www.instagram.com/chaatchaska2023?utm_source=qr",
+  tiktok: "https://www.tiktok.com/@chaatchaska",
   // Open 8:00 AM – 12:00 AM every day.
   openHour: 8,
   closeHour: 24, // 12 AM

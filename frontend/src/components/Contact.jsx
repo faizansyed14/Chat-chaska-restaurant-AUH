@@ -127,15 +127,35 @@ export default function Contact() {
               </a>
             </div>
 
-            <a
-              href={`https://instagram.com/${RESTAURANT.instagram}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <Button variant="outline" className="w-full gap-2">
-                <Instagram className="h-4 w-4" /> Follow @{RESTAURANT.instagram}
-              </Button>
-            </a>
+            <div className="grid grid-cols-2 gap-4">
+              <a
+                href={RESTAURANT.instagram}
+                target="_blank"
+                rel="noreferrer"
+                className="group"
+              >
+                <Button variant="outline" className="w-full gap-2 transition-all group-hover:border-chili/50 group-hover:bg-chili/5">
+                  <Instagram className="h-4 w-4" /> Instagram
+                </Button>
+              </a>
+              <a
+                href={RESTAURANT.tiktok}
+                target="_blank"
+                rel="noreferrer"
+                className="group"
+              >
+                <Button variant="outline" className="w-full gap-2 transition-all group-hover:border-masala group-hover:bg-masala/5">
+                  <svg 
+                    viewBox="0 0 24 24" 
+                    className="h-4 w-4 fill-current"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.03 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.9-.39-2.82-.12-1.07.3-1.95 1.17-2.32 2.22-.39 1.02-.14 2.24.63 3.05.62.72 1.51 1.2 2.45 1.32 1.02.16 2.1-.14 2.93-.79.75-.54 1.18-1.42 1.23-2.35.03-3.53.01-7.06.02-10.59.02-1.02.01-2.04.01-3.06z"/>
+                  </svg>
+                  TikTok
+                </Button>
+              </a>
+            </div>
           </motion.div>
 
           {/* Map column */}
