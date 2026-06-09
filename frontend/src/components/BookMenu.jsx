@@ -6,9 +6,9 @@ import { Logo } from "@/components/Navbar";
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 const ACCENTS = {
-  chili:    "#E23A1E",
-  saffron:  "#F4900C",
-  leaf:     "#3E7C4A",
+  chili: "#E23A1E",
+  saffron: "#F4900C",
+  leaf: "#3E7C4A",
   turmeric: "#E58300",
 };
 
@@ -16,9 +16,8 @@ const ACCENTS = {
 const Page = forwardRef(({ children, side }, ref) => (
   <div
     ref={ref}
-    className={`menu-page ${
-      side === "left" ? "menu-page-left" : "menu-page-right"
-    } h-full overflow-hidden p-5 sm:p-8`}
+    className={`menu-page ${side === "left" ? "menu-page-left" : "menu-page-right"
+      } h-full overflow-hidden p-4 sm:p-8`}
   >
     {children}
   </div>
@@ -26,24 +25,32 @@ const Page = forwardRef(({ children, side }, ref) => (
 Page.displayName = "Page";
 
 // ─── Shared page content components ──────────────────────────────────────────
-function CoverContent() {
+function CoverContent({ onClick }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-masala to-[#5e1209] p-8 text-center text-cream">
+    <div
+      onClick={onClick}
+      className="flex h-full cursor-pointer flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-masala to-[#5e1209] p-8 text-center text-cream"
+    >
       <Logo light />
       <div className="my-6 h-px w-24 bg-saffron/60" />
       <Utensils className="h-10 w-10 text-saffron" />
       <h3 className="mt-4 font-display text-3xl font-black">The Menu</h3>
       <p className="mt-2 font-script text-2xl text-saffron">Nasha · Chaska · Zaika</p>
-      <p className="mt-8 text-xs uppercase tracking-[0.3em] text-cream/60">
-        Tap the corner to begin
-      </p>
+      <div className="mt-8 animate-bounce rounded-full border border-saffron/30 bg-saffron/10 px-4 py-2">
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-saffron">
+          Tap to open menu
+        </p>
+      </div>
     </div>
   );
 }
 
-function BackCoverContent() {
+function BackCoverContent({ onClick }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-saffron to-chili p-8 text-center text-white">
+    <div
+      onClick={onClick}
+      className="flex h-full cursor-pointer flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-saffron to-chili p-8 text-center text-white"
+    >
       <h3 className="font-display text-3xl font-black">Thank you!</h3>
       <p className="mt-3 max-w-[18rem] text-sm leading-relaxed text-white/90">
         We serve street food with pride — from our heart to your plate. Hope to
@@ -54,10 +61,10 @@ function BackCoverContent() {
   );
 }
 
-function CategoryContent({ cat, highlight }) {
+function CategoryContent({ cat, highlight, onClick }) {
   const accent = ACCENTS[cat.accent] || ACCENTS.saffron;
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col cursor-pointer" onClick={onClick}>
       <div className="border-b-2 border-dashed border-masala/20 pb-3">
         <span className="font-script text-xl" style={{ color: accent }}>
           {cat.subtitle}
@@ -74,9 +81,8 @@ function CategoryContent({ cat, highlight }) {
           return (
             <li
               key={i}
-              className={`flex items-baseline rounded-lg px-1 text-[12px] sm:text-[13px] transition-colors ${
-                isMatch ? "bg-saffron/20" : ""
-              }`}
+              className={`flex items-baseline rounded-lg px-1 text-[12px] sm:text-[13px] transition-colors ${isMatch ? "bg-saffron/20" : ""
+                }`}
             >
               <span className="font-semibold text-masala/90">{it.name}</span>
               <span className="dotted-rule" />
@@ -104,20 +110,15 @@ function measureDesktop(containerWidth) {
 }
 
 // ─── MOBILE BOOK ──────────────────────────────────────────────────────────────
-// react-pageflip in single-page portrait mode → real paper-turning animation.
-// Fixed width/height (no maxWidth shrink) + mobileScrollSupport off + no remount
-// during a flip keeps it from the zoom/shudder jank.
-// Sizes from the ACTUAL available width (not window) so the book never
-// overflows its slot — that overflow was what pushed it off-centre.
 function measureMobile(availWidth) {
   const w = Math.max(240, Math.min(availWidth - 8, 380));
-  return { w, h: Math.round(w * 1.3) };
+  return { w, h: Math.round(w * 1.15) };
 }
 
 function MobileBook({ categories, query, branch }) {
   const book = useRef(null);
   const wrapRef = useRef(null);
-  const total = categories.length + 2; // cover + categories + back cover
+  const total = categories.length + 2;
   const [page, setPage] = useState(0);
   const [dims, setDims] = useState(() =>
     measureMobile(
@@ -150,7 +151,6 @@ function MobileBook({ categories, query, branch }) {
     };
   }, []);
 
-  // Jump to first category that matches the search query
   useEffect(() => {
     if (!query.trim()) return;
     const lq = query.toLowerCase();
@@ -160,11 +160,22 @@ function MobileBook({ categories, query, branch }) {
     if (idx !== -1) book.current?.pageFlip()?.flip(idx + 1);
   }, [query, categories]);
 
+  const handlePageClick = (e) => {
+    if (flippingRef.current) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    if (x > rect.width * 0.5) {
+      book.current?.pageFlip()?.flipNext();
+    } else {
+      book.current?.pageFlip()?.flipPrev();
+    }
+  };
+
   return (
     <div ref={wrapRef} className="w-full">
       <div
         className="book-shadow"
-        style={{ width: dims.w, margin: "0 auto", touchAction: "manipulation" }}
+        style={{ width: dims.w, margin: "0 auto", touchAction: "pan-y" }}
       >
         <div className="book-stage" style={{ width: dims.w, height: dims.h }}>
           <HTMLFlipBook
@@ -179,11 +190,12 @@ function MobileBook({ categories, query, branch }) {
             size="fixed"
             usePortrait={true}
             showCover={false}
-            mobileScrollSupport={false}
+            mobileScrollSupport={true}
             maxShadowOpacity={0.25}
             drawShadow={true}
             flippingTime={500}
             useMouseEvents={true}
+            clickEventForward={true}
             swipeDistance={30}
             showPageCorners={true}
             onChangeState={(e) => {
@@ -192,13 +204,17 @@ function MobileBook({ categories, query, branch }) {
             onFlip={(e) => setPage(e.data)}
             className="mx-auto"
           >
-            <Page side="right"><CoverContent /></Page>
+            <Page side="right">
+              <CoverContent onClick={handlePageClick} />
+            </Page>
             {categories.map((cat, i) => (
               <Page key={cat.id} side={i % 2 === 0 ? "left" : "right"}>
-                <CategoryContent cat={cat} highlight={query} />
+                <CategoryContent cat={cat} highlight={query} onClick={handlePageClick} />
               </Page>
             ))}
-            <Page side="left"><BackCoverContent /></Page>
+            <Page side="left">
+              <BackCoverContent onClick={handlePageClick} />
+            </Page>
           </HTMLFlipBook>
         </div>
       </div>
@@ -283,9 +299,8 @@ function DesktopBook({ categories, query, branch }) {
           style={{
             width: dims.w * 2,
             maxWidth: "100%",
-            transform: `translateX(${
-              page === 0 ? -dims.w / 2 : page === total - 1 ? dims.w / 2 : 0
-            }px)`,
+            transform: `translateX(${page === 0 ? -dims.w / 2 : page === total - 1 ? dims.w / 2 : 0
+              }px)`,
             transition: "transform 0.45s ease",
           }}
         >
@@ -405,16 +420,14 @@ export default function BookMenu({
             <button
               key={b.id}
               onClick={() => onBranchChange(b.id)}
-              className={`group relative flex items-center gap-4 overflow-hidden rounded-[2rem] border-2 p-4 text-left transition-all sm:p-5 ${
-                branch === b.id
+              className={`group relative flex items-center gap-4 overflow-hidden rounded-[2rem] border-2 p-4 text-left transition-all sm:p-5 ${branch === b.id
                   ? "border-chili bg-white shadow-warm"
                   : "border-masala/10 bg-white/40 hover:border-masala/20 hover:bg-white"
-              }`}
+                }`}
             >
               <div
-                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl transition-colors ${
-                  branch === b.id ? "bg-chili text-white" : "bg-masala/5 text-masala/40"
-                }`}
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-2xl transition-colors ${branch === b.id ? "bg-chili text-white" : "bg-masala/5 text-masala/40"
+                  }`}
               >
                 <Utensils className="h-6 w-6" />
               </div>
@@ -434,9 +447,9 @@ export default function BookMenu({
               </div>
               {branch === b.id && (
                 <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                   <div className="rounded-full bg-chili p-1 text-white">
-                      <ChevronRight className="h-4 w-4" />
-                   </div>
+                  <div className="rounded-full bg-chili p-1 text-white">
+                    <ChevronRight className="h-4 w-4" />
+                  </div>
                 </div>
               )}
             </button>
